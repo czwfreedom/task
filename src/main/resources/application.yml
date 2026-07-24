@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+project:
+  name: task
+
+server:
+  port: 8080
