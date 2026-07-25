@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haole.task.dao.RoutineDao">
+    <resultMap id="BaseResultMap" type="com.haole.task.model.entity.RoutineDTO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="subcategory" jdbcType="INTEGER" property="subcategory"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+        <result column="transaction" jdbcType="VARCHAR" property="transaction"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
+        <result column="medias" jdbcType="VARCHAR" property="medias"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="media_remark" jdbcType="VARCHAR" property="mediaRemark"/>
+        <result column="extra" jdbcType="VARCHAR" property="extra"/>
+        <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, deleted, `status`, category, subcategory, user_id, `date`, `transaction`, `name`,
+    detail, medias, remark, media_remark, extra, finish_time, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_routine
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.haole.task.model.entity.Routine" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_routine
+        <where>
+            <if test="transaction != null">
+                and `transaction` = #{transaction,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="date != null">
+                and `date` = #{date,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deleted != null">
+                and deleted = #{deleted,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_routine
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.haole.task.model.entity.Routine"
+            useGeneratedKeys="true">
+        insert into t_routine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="subcategory != null">
+                subcategory,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="date != null">
+                `date`,
+            </if>
+            <if test="transaction != null">
+                `transaction`,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+            <if test="medias != null">
+                medias,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="mediaRemark != null">
+                media_remark,
+            </if>
+            <if test="extra != null">
+                extra,
+            </if>
+            <if test="finishTime != null">
+                finish_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=INTEGER},
+            </if>
+            <if test="subcategory != null">
+                #{subcategory,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="transaction != null">
+                #{transaction,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="medias != null">
+                #{medias,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaRemark != null">
+                #{mediaRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="extra != null">
+                #{extra,jdbcType=VARCHAR},
+            </if>
+            <if test="finishTime != null">
+                #{finishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.haole.task.model.entity.Routine">
+        update t_routine
+        <set>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                category = #{category,jdbcType=INTEGER},
+            </if>
+            <if test="subcategory != null">
+                subcategory = #{subcategory,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                `date` = #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="transaction != null">
+                `transaction` = #{transaction,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="medias != null">
+                medias = #{medias,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaRemark != null">
+                media_remark = #{mediaRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="extra != null">
+                extra = #{extra,jdbcType=VARCHAR},
+            </if>
+            <if test="finishTime != null">
+                finish_time = #{finishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
