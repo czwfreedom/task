@@ -32,6 +32,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+            <!-- 4.1.0目前比较新，BOM还没有被管理-->
             <version>3.2.1</version>
         </dependency>
 
@@ -64,14 +65,10 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.21.4</version>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.21</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
-        </dependency>
+
     </dependencies>
 
     <build>

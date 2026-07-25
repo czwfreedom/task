@@ -1,7 +1,5 @@
 package com.haole.task.aop;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -80,7 +80,7 @@ public class RequestLogAspect {
         }
         try {
             return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return obj.toString();
         }
     }

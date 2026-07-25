@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haole.task.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.haole.task.model.entity.UserDTO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="roles" jdbcType="TINYINT" property="roles"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="wx_union_id" jdbcType="VARCHAR" property="wxUnionId"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, deleted, roles, `type`, gender, token, `name`, nickname, avatar, wx_union_id,
+    phone, login_time, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertSelective" parameterType="com.haole.task.model.entity.User">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="roles != null">
+                roles,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="wxUnionId != null">
+                wx_union_id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="loginTime != null">
+                login_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="roles != null">
+                #{roles,jdbcType=TINYINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="wxUnionId != null">
+                #{wxUnionId,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.haole.task.model.entity.User">
+        update t_user
+        <set>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="roles != null">
+                roles = #{roles,jdbcType=TINYINT},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="wxUnionId != null">
+                wx_union_id = #{wxUnionId,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                login_time = #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

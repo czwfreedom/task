@@ -1,9 +1,9 @@
 spring:
   datasource:
     name: memo
-    url: jdbc:mysql://121.36.153.147:3306/memo?autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true
+    url: jdbc:mysql://rm-wz921c7y42227097u0o.mysql.cn-shenzhen.rds.aliyuncs.com/task?autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true
     username: app
-    password: Y-gM9KVXPpsn65UT890
+    password: UF5mrwi44U
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 #    type: com.alibaba.druid.pool.DruidDataSource
