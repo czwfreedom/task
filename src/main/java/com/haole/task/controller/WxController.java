@@ -1,6 +1,7 @@
 package com.haole.task.controller;
 
 import com.haole.task.aop.RequestLog;
+import com.haole.task.auth.SkipAuth;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.WxPojos;
 import com.haole.task.service.WxLoginService;
@@ -20,6 +21,8 @@ public class WxController {
         this.wxLoginService = wxLoginService;
     }
 
+
+    @SkipAuth
     @RequestLog
     @PostMapping("/v1/wx/mini/login")
     public BaseResponse miniLogin(@RequestBody WxPojos.WxLoginRequest request) {
