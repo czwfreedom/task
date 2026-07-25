@@ -1,5 +1,6 @@
 package com.haole.task.aop;
 
+import com.haole.task.utils.LogUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,8 +24,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class RequestLogAspect {
 
-    private static final Logger inputLog = LoggerFactory.getLogger("INPUT");
-    private static final Logger outputLog = LoggerFactory.getLogger("OUTPUT");
+    private static final Logger log = LoggerFactory.getLogger("AOP");
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -42,7 +42,7 @@ public class RequestLogAspect {
 
         // 1. 记录 API 输入（在业务逻辑执行之前，保证日志顺序正确）
         String rawBody = readRawBody();
-        inputLog.info("v1={}", rawBody);
+        LogUtils.log(log, "Request", rawBody);
 
         long start = System.currentTimeMillis();
         Object result;
@@ -53,13 +53,14 @@ public class RequestLogAspect {
 
             // 3. 记录 API 输出
             if (requestLogAnno.logResponse()) {
-                outputLog.info("elapsed={} v1={}", elapsed, toJson(result));
+                LogUtils.logPlace(log, "Response", "cost={}", elapsed, toJson(result));
             } else {
-                outputLog.info("elapsed={} v1={}", elapsed, result == null ? "null" : result.getClass().getSimpleName());
+                LogUtils.logPlace(log, "Response", "cost={}", elapsed, result != null ?
+                        result.getClass().getSimpleName() : "null");
             }
         } catch (Throwable t) {
             long elapsed = System.currentTimeMillis() - start;
-            outputLog.error("elapsed={} error={}", elapsed, t.toString(), t);
+            LogUtils.logPlace(log, "Response", "cost={}", elapsed, t.toString(), t);
             throw t;
         }
 

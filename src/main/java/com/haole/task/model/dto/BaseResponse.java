@@ -9,6 +9,7 @@ import lombok.Data;
  * Created by Castle at 2021-12-23
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
 
     @JsonProperty("errno")

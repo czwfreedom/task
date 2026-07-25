@@ -25,4 +25,9 @@ public interface ErrorCode {
      */
     int ERR_DUPLICATED_OPERATE = 1004;
 
+    /**
+     * 微信接口调用失败
+     */
+    int ERR_WX_API_FAILED = 1005;
+
 }

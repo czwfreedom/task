@@ -2,6 +2,7 @@ package com.haole.task.controller;
 
 import com.haole.task.aop.RequestLog;
 import com.haole.task.model.dto.BaseResponse;
+import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class HelloController {
     @RequestLog
     @PostMapping("/v1/hello")
     public BaseResponse hello() {
-        log.info("processing hello request");
+        LogUtils.log(log, "Hello");
         return new BaseResponse();
     }
 }
