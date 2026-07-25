@@ -36,6 +36,10 @@ public class User extends InfoEntity {
      */
     private String wxUnionId;
     /**
+     * 微信开发ID
+     */
+    private String openId;
+    /**
      * 电话号码
      */
     private String phone;

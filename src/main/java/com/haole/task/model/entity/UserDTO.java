@@ -7,4 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO extends User {
+
+    public void adapt() {
+        setUpdateTime(null);
+        setOpenId(null);
+        setDeleted(null);
+    }
 }

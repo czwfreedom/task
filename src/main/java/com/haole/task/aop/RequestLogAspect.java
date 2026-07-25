@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tools.jackson.core.JacksonException;
@@ -24,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class RequestLogAspect {
 
-    private static final Logger log = LoggerFactory.getLogger("AOP");
+    private static final Logger log = LogUtils.getLogger("AOP");
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired

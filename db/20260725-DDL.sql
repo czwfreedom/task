@@ -11,13 +11,15 @@ CREATE TABLE IF NOT EXISTS `t_user`
     `name`        varchar(128) COMMENT "名字",
     `nickname`    varchar(128) COMMENT "昵称",
     `avatar`      varchar(256) COMMENT "头像",
-    `wx_union_id` varchar(32) COMMENT "微信union_id",
+    `wx_union_id` varchar(32) COMMENT "微信unionId",
+    `open_id`     varchar(32) COMMENT "微信open_id",
     `phone`       varchar(32) COMMENT "电话号码",
 
     `login_time`  datetime COMMENT "登录时间",
     `create_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    KEY WX (`wx_union_id`)
+    KEY WX (`wx_union_id`),
+    KEY WX_OPEN (`open_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

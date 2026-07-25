@@ -12,13 +12,14 @@
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="wx_union_id" jdbcType="VARCHAR" property="wxUnionId"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, roles, `type`, gender, token, `name`, nickname, avatar, wx_union_id,
+        id, deleted, roles, `type`, gender, token, `name`, nickname, avatar, wx_union_id, open_id,
     phone, login_time, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -35,6 +36,9 @@
         <where>
             <if test="wxUnionId != null">
                 and wx_union_id = #{wxUnionId,jdbcType=VARCHAR}
+            </if>
+            <if test="openId != null">
+                and open_id = #{openId,jdbcType=VARCHAR}
             </if>
             <if test="deleted != null">
                 and deleted = #{deleted,jdbcType=SMALLINT}
@@ -80,6 +84,9 @@
             <if test="wxUnionId != null">
                 wx_union_id,
             </if>
+            <if test="openId != null">
+                open_id,
+            </if>
             <if test="phone != null">
                 phone,
             </if>
@@ -124,6 +131,9 @@
             <if test="wxUnionId != null">
                 #{wxUnionId,jdbcType=VARCHAR},
             </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
             </if>
@@ -167,6 +177,9 @@
             </if>
             <if test="wxUnionId != null">
                 wx_union_id = #{wxUnionId,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
             </if>
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},

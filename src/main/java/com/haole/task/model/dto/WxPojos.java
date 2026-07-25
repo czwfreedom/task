@@ -44,7 +44,9 @@ public interface WxPojos {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    class WxLoginResponse extends BaseResponse {
-        public List<UserDTO> data;
+    class WxLoginResponse extends DataResponse<List<UserDTO>> {
+        public WxLoginResponse(List<UserDTO> data) {
+            super(data);
+        }
     }
 }

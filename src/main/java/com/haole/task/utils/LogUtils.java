@@ -1,6 +1,7 @@
 package com.haole.task.utils;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.util.ObjectUtils;
 
@@ -16,6 +17,10 @@ import java.util.regex.Pattern;
 public class LogUtils {
 
     private final static Pattern pattern = Pattern.compile("(\\{)(\\})");
+
+    public static Logger getLogger(String name) {
+        return LoggerFactory.getLogger(name);
+    }
 
     public static String dumpThrowable(Throwable ex) {
         if (ex == null) {
