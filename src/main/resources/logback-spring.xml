@@ -3,9 +3,8 @@
     <!-- 日志目录 -->
     <property name="LOG_PATH" value="./logs"/>
     <property name="LOG_FILE" value="task"/>
-    <!-- 日志格式 -->
     <property name="LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][%level][%logger{36}]%X{trace} %msg%n"/>
 
     <!-- 控制台输出 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
