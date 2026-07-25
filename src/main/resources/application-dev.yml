@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: task
-    url: jdbc:mysql://rm-wz921c7y42227097u0o.mysql.cn-shenzhen.rds.aliyuncs.com/task?autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true
+    url: jdbc:mysql://${DB_URL:}/task?autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true
     username: app
     password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -38,5 +38,5 @@ mybatis:
 # 微信小程序配置
 wx:
   mini:
-    app-id: wxb801d991ce873439
+    app-id: ${WX_MINI_APP_ID:}
     app-secret: ${WX_MINI_APP_SECRET:}
