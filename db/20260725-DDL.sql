@@ -34,7 +34,9 @@ CREATE TABLE IF NOT EXISTS `t_routine`
     `subcategory`  int        NOT NULL DEFAULT 0 COMMENT '任务子类型',
 
     `user_id`      bigint(19) NOT NULL COMMENT '归属用户',
+    `duration`     bigint COMMENT '计划任务时长',
     `date`         datetime   NOT NULL COMMENT '任务日期',
+    `plan_time`    datetime COMMENT '计划时间',
     `transaction`  varchar(32) COMMENT '防重提交',
     `name`         text COMMENT '名字',
     `detail`       text COMMENT '详情',
@@ -47,6 +49,14 @@ CREATE TABLE IF NOT EXISTS `t_routine`
     `create_time`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`  datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    KEY USER_DATE (`user_id`, `date`)
+    KEY USER_DATE (`user_id`, `date`),
+    UNIQUE KEY `TRANSACTION` (`transaction`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+# CREATE UNIQUE INDEX `TRANSACTION` ON t_routine (`transaction`);
+
+# ALTER TABLE t_routine
+#     ADD COLUMN `duration` bigint COMMENT '计划任务时长' AFTER user_id;
+# ALTER TABLE t_routine
+#     ADD COLUMN `plan_time` datetime COMMENT '计划时间' AFTER `date`;

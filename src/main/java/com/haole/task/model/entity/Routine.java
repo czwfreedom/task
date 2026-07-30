@@ -31,11 +31,22 @@ public class Routine extends InfoEntity {
      */
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
+
+    /**
+     * 计划时长。
+     */
+    private Long duration;
     /**
      * 任务日期
      */
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date date;
+
+    /**
+     * 任务计划时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    private Date planTime;
     /**
      * 防重提交
      */

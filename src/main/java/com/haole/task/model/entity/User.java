@@ -1,5 +1,6 @@
 package com.haole.task.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -46,5 +47,6 @@ public class User extends InfoEntity {
     /**
      * 登录时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date loginTime;
 }

@@ -8,7 +8,9 @@
         <result column="category" jdbcType="INTEGER" property="category"/>
         <result column="subcategory" jdbcType="INTEGER" property="subcategory"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="duration" jdbcType="BIGINT" property="duration"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
+        <result column="plan_time" jdbcType="TIMESTAMP" property="planTime"/>
         <result column="transaction" jdbcType="VARCHAR" property="transaction"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="detail" jdbcType="VARCHAR" property="detail"/>
@@ -21,7 +23,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `status`, category, subcategory, user_id, `date`, `transaction`, `name`,
+        id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `transaction`, `name`,
     detail, medias, remark, media_remark, extra, finish_time, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -72,8 +74,14 @@
             <if test="userId != null">
                 user_id,
             </if>
+            <if test="duration != null">
+                duration,
+            </if>
             <if test="date != null">
                 `date`,
+            </if>
+            <if test="planTime != null">
+                `plan_time`,
             </if>
             <if test="transaction != null">
                 `transaction`,
@@ -122,8 +130,14 @@
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
             </if>
+            <if test="duration != null">
+                #{duration,jdbcType=BIGINT},
+            </if>
             <if test="date != null">
                 #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planTime != null">
+                #{planTime,jdbcType=TIMESTAMP},
             </if>
             <if test="transaction != null">
                 #{transaction,jdbcType=VARCHAR},
@@ -175,8 +189,14 @@
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
             </if>
+            <if test="duration != null">
+                duration = #{duration,jdbcType=BIGINT},
+            </if>
             <if test="date != null">
                 `date` = #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planTime != null">
+                `plan_time` = #{planTime,jdbcType=TIMESTAMP},
             </if>
             <if test="transaction != null">
                 `transaction` = #{transaction,jdbcType=VARCHAR},
