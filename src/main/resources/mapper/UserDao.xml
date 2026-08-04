@@ -22,6 +22,9 @@
         id, deleted, roles, `type`, gender, token, `name`, nickname, avatar, wx_union_id, open_id,
     phone, login_time, create_time, update_time
     </sql>
+    <sql id="Brief_Column_List">
+        id, deleted, roles, `type`, gender,  `name`, nickname, avatar, phone, login_time
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -43,6 +46,26 @@
             <if test="deleted != null">
                 and deleted = #{deleted,jdbcType=SMALLINT}
             </if>
+        </where>
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <choose>
+            <when test="withDetail != null and withDetail == true">
+                <include refid="Base_Column_List"/>
+            </when>
+            <otherwise>
+                <include refid="Brief_Column_List"/>
+            </otherwise>
+        </choose>
+        from t_user
+        <where>
+            id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=BIGINT}
+            </foreach>
+            AND deleted = 0
         </where>
     </select>
 

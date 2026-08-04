@@ -3,19 +3,12 @@ package com.haole.task.model.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * 用户DTO
+ * 每日任务。
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDTO extends User {
-
+public class RelationDTO extends Relation {
     public void adapt() {
         setUpdateTime(null);
-        setOpenId(null);
         setDeleted(null);
-    }
-
-    public void adaptMore() {
-        this.adapt();
-        this.setToken(null);
     }
 }

@@ -71,9 +71,8 @@ public class RoutineController {
         if (request.getUserId() == null) {
             request.setUserId(userId);
         }
-        if (request.getDate() != null) {
-            request.setDate(new Date(DateUtils.getStartOfDay(request.getDate().getTime())));
-        }
+        request.setDate(new Date(DateUtils.getStartOfDay(
+                request.getDate() != null ? request.getDate().getTime() : System.currentTimeMillis())));
         return routineService.list(userId, request);
     }
 }

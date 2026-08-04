@@ -6,6 +6,7 @@ import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
+import com.haole.task.service.RelationService;
 import com.haole.task.service.RoutineService;
 import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
@@ -25,18 +26,29 @@ public class RoutineServiceImpl implements RoutineService {
     private static final Logger log = LogUtils.getLogger(RoutineService.class.getSimpleName());
 
     private final RoutineDao routineDao;
+    private final RelationService relationService;
 
-    public RoutineServiceImpl(RoutineDao routineDao) {
+    public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService) {
         this.routineDao = routineDao;
+        this.relationService = relationService;
     }
 
     @Override
     public BaseResponse create(Long userId, RoutinePojos.CreateRequest request) {
+        Routine record = new Routine();
+        record.setUserId(userId);
+        record.setDate(request.data.get(0).getDate());
+        record.setDeleted((byte) 0);
+        List<RoutineDTO> exists = routineDao.selectByCondition(record);
+        // 每天最多创建 16 条日常。
+        if (exists.size() + request.data.size() > 16) {
+            return new BaseResponse(ErrorCode.ERR_OVER_LIMIT);
+        }
+
+
         // 不应该这样做。但目前的场景都是一个个修改的，偷个懒不想加接口了。
         for (RoutineDTO item : request.data) {
-            Routine record = new Routine();
-            record.setTransaction(item.getTransaction());
-            if (!CollectionUtils.isEmpty(routineDao.selectByCondition(record))) {
+            if (find(exists, item.getTransaction()) != null) {
                 LogUtils.logWarn(log, "RoutineExist", item.getTransaction());
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
@@ -45,6 +57,18 @@ public class RoutineServiceImpl implements RoutineService {
             item.adapt();
         }
         return new RoutinePojos.Response(request.data);
+    }
+
+    protected RoutineDTO find(List<RoutineDTO> items, String transaction) {
+        if (CollectionUtils.isEmpty(items)) {
+            return null;
+        }
+        for (RoutineDTO item : items) {
+            if (transaction.equals(item.getTransaction())) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -75,6 +99,10 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public BaseResponse list(Long userId, RoutinePojos.ListRequest request) {
+        if (!userId.equals(request.getUserId()) && !relationService.canManage(userId, request.getUserId())) {
+            return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
+        }
+
         List<RoutineDTO> result = routineDao.selectByCondition(request);
         if (!CollectionUtils.isEmpty(result)) {
             result.forEach(RoutineDTO::adapt);

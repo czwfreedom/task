@@ -54,6 +54,25 @@ CREATE TABLE IF NOT EXISTS `t_routine`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+
+CREATE TABLE IF NOT EXISTS `t_relation`
+(
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `deleted`     tinyint    NOT NULL DEFAULT 0 COMMENT '是否已删除',
+    `type`        tinyint COMMENT '类型，保留',
+
+    `user_id`     bigint(19) NOT NULL COMMENT '用户',
+    `usee_id`     bigint(19) NOT NULL COMMENT '被关注用户',
+    `remark`      text COMMENT '备注',
+    `extra`       text COMMENT '保留扩展',
+    `create_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `USER` (`user_id`, `usee_id`),
+    KEY `USEE` (`usee_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
 # CREATE UNIQUE INDEX `TRANSACTION` ON t_routine (`transaction`);
 
 # ALTER TABLE t_routine
