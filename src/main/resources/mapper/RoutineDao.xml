@@ -236,7 +236,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectStat" resultMap="StatResultMap">
+    <select id="selectCount" resultMap="StatResultMap">
         select user_id, count(1) as cnt
         from t_routine
         where user_id in

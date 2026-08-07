@@ -20,7 +20,7 @@ public interface RoutineDao {
 
     List<RoutineDTO> selectByCondition(Routine record);
 
-    List<StatEntity> selectStat(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
+    List<StatEntity> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
 
 
     int updateByPrimaryKeySelective(Routine record);

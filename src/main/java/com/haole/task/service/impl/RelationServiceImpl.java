@@ -139,7 +139,7 @@ public class RelationServiceImpl implements RelationService {
         Map<Long, StatEntity> stats = null;
         if (!ObjectUtils.isEmpty(request.getUserId()) && Boolean.TRUE.equals(request.withStat) &&
                 !CollectionUtils.isEmpty(userIds)) {
-            stats = routineDao.selectStat(userIds, new Date(DateUtils.getStartOfDay(System.currentTimeMillis())))
+            stats = routineDao.selectCount(userIds, new Date(DateUtils.getStartOfDay(System.currentTimeMillis())))
                     .stream().collect(Collectors.toMap(StatEntity::getId, Function.identity()));
         }
         for (UserDTO user : users) {
