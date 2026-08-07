@@ -23,7 +23,7 @@ public interface RoutineDao {
 
     List<StatEntity> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
 
-    Map<String, Integer> selectTotalStat(@Param("userId") Long userId);
+    Map<String, Object> selectTotalStat(@Param("userId") Long userId);
 
     List<Date> selectDistinctDates(@Param("userId") Long userId);
 

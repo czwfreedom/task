@@ -250,7 +250,7 @@
 
     <select id="selectTotalStat" resultType="java.util.HashMap">
         select count(1)                                      as `total`,
-               sum(case when status = 200 then 1 else 0 end) as `finished`,
+               sum(case when status = 100 then 1 else 0 end) as `finished`,
                count(distinct `date`)                        as `days`
         from t_routine
         where user_id = #{userId,jdbcType=BIGINT}

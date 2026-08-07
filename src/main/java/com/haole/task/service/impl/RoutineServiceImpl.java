@@ -116,11 +116,12 @@ public class RoutineServiceImpl implements RoutineService {
     public BaseResponse stat(Long userId) {
         RoutinePojos.Stat stat = new RoutinePojos.Stat();
         // 直接从表查，未来数据大了再优化
-        Map<String, Integer> totalStat = routineDao.selectTotalStat(userId);
+        Map<String, Object> totalStat = routineDao.selectTotalStat(userId);
         if (totalStat != null && !totalStat.isEmpty()) {
-            stat.total = totalStat.get("total");
-            stat.finished = totalStat.get("finished");
-            stat.days = totalStat.get("days");
+            // COUNT 返回 Long，SUM 返回 BigDecimal
+            stat.total = toInt(totalStat.get("total"));
+            stat.finished = toInt(totalStat.get("finished"));
+            stat.days = toInt(totalStat.get("days"));
         }
 
         // 计算连续天数
@@ -128,6 +129,12 @@ public class RoutineServiceImpl implements RoutineService {
         stat.rowDays = calcRowDays(dates);
 
         return new DataResponse<>(stat);
+    }
+
+    private int toInt(Object val) {
+        if (val == null) return 0;
+        if (val instanceof Number n) return n.intValue();
+        return Integer.parseInt(val.toString());
     }
 
     /**
