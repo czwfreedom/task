@@ -24,6 +24,10 @@ public interface RelationPojos {
     }
 
     class ListRequest extends RelationDTO {
+        /**
+         * 拉当天的统计。
+         */
+        public Boolean withStat;
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

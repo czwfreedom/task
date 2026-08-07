@@ -2,13 +2,16 @@ package com.haole.task.service.impl;
 
 import com.haole.task.constants.ErrorCode;
 import com.haole.task.dao.RelationDao;
+import com.haole.task.dao.RoutineDao;
 import com.haole.task.dao.UserDao;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.RelationPojos;
 import com.haole.task.model.entity.Relation;
 import com.haole.task.model.entity.RelationDTO;
+import com.haole.task.model.entity.StatEntity;
 import com.haole.task.model.entity.UserDTO;
 import com.haole.task.service.RelationService;
+import com.haole.task.utils.DateUtils;
 import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 关系服务
@@ -29,10 +35,12 @@ public class RelationServiceImpl implements RelationService {
 
     private final RelationDao relationDao;
     private final UserDao userDao;
+    private final RoutineDao routineDao;
 
-    public RelationServiceImpl(RelationDao relationDao, UserDao userDao) {
+    public RelationServiceImpl(RelationDao relationDao, UserDao userDao, RoutineDao routineDao) {
         this.relationDao = relationDao;
         this.userDao = userDao;
+        this.routineDao = routineDao;
     }
 
 
@@ -128,8 +136,19 @@ public class RelationServiceImpl implements RelationService {
         List<Long> userIds = relations.stream()
                 .map(o -> !ObjectUtils.isEmpty(request.getUserId()) ? o.getUseeId() : o.getUserId()).toList();
         List<UserDTO> users = userDao.selectByIds(userIds, false);
+        Map<Long, StatEntity> stats = null;
+        if (!ObjectUtils.isEmpty(request.getUserId()) && Boolean.TRUE.equals(request.withStat) &&
+                !CollectionUtils.isEmpty(userIds)) {
+            stats = routineDao.selectStat(userIds, new Date(DateUtils.getStartOfDay(System.currentTimeMillis())))
+                    .stream().collect(Collectors.toMap(StatEntity::getId, Function.identity()));
+        }
         for (UserDTO user : users) {
             user.adaptMore();
+            StatEntity stat = stats != null ? stats.get(user.getId()) : null;
+            if (stat != null) {
+                stat.adapt();
+                user.setRoutine(stat);
+            }
         }
         for (RelationDTO relation : relations) {
             relation.adapt();

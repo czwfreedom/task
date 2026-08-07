@@ -22,6 +22,10 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    <resultMap id="StatResultMap" type="com.haole.task.model.entity.StatEntity">
+        <result column="user_id" jdbcType="BIGINT" property="id"/>
+        <result column="cnt" jdbcType="INTEGER" property="count"/>
+    </resultMap>
     <sql id="Base_Column_List">
         id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `transaction`, `name`,
     detail, medias, remark, media_remark, extra, finish_time, create_time, update_time
@@ -231,4 +235,16 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="selectStat" resultMap="StatResultMap">
+        select user_id, count(1) as cnt
+        from t_routine
+        where user_id in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId,jdbcType=BIGINT}
+        </foreach>
+        and `date` = #{date,jdbcType=TIMESTAMP}
+        and deleted = 0
+        group by user_id
+    </select>
 </mapper>
