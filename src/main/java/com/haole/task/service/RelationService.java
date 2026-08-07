@@ -25,4 +25,9 @@ public interface RelationService {
      * 新增。
      */
     BaseResponse list(Long userId, RelationPojos.ListRequest request);
+
+    /**
+     * 统计数据。
+     */
+    BaseResponse stat(Long userId);
 }

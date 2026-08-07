@@ -84,4 +84,10 @@ public class RelationController {
 
         return relationService.list(userId, request);
     }
+
+    @RequestLog(logResponse = false)
+    @PostMapping("/v1/relation/stat")
+    public BaseResponse stat(@RequestHeader(Constants.HEADER_USER_ID) Long userId) {
+        return relationService.stat(userId);
+    }
 }

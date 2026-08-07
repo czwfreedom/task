@@ -130,4 +130,18 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="selectUseeCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_relation
+        where deleted = 0
+          and user_id = #{userId}
+    </select>
+
+    <select id="selectUserCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_relation
+        where deleted = 0
+          and usee_id = #{userId}
+    </select>
 </mapper>

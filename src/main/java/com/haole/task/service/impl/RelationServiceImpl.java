@@ -157,4 +157,12 @@ public class RelationServiceImpl implements RelationService {
         response.users = users;
         return response;
     }
+
+    @Override
+    public BaseResponse stat(Long userId) {
+        RelationPojos.StatResponse response = new RelationPojos.StatResponse();
+        response.useeCount = relationDao.selectUseeCount(userId);
+        response.userCount = relationDao.selectUserCount(userId);
+        return response;
+    }
 }
