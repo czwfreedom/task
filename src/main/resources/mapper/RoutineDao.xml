@@ -247,4 +247,21 @@
         and deleted = 0
         group by user_id
     </select>
+
+    <select id="selectTotalStat" resultType="java.util.HashMap">
+        select count(1)                                      as `total`,
+               sum(case when status = 200 then 1 else 0 end) as `finished`,
+               count(distinct `date`)                        as `days`
+        from t_routine
+        where user_id = #{userId,jdbcType=BIGINT}
+          and deleted = 0
+    </select>
+
+    <select id="selectDistinctDates" resultType="java.util.Date">
+        select distinct `date` as dt
+        from t_routine
+        where user_id = #{userId,jdbcType=BIGINT}
+          and deleted = 0
+        order by dt desc
+    </select>
 </mapper>

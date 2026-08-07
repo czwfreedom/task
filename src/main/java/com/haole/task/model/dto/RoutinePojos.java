@@ -23,4 +23,23 @@ public interface RoutinePojos {
 
     class ListRequest extends RoutineDTO {
     }
+
+    class Stat {
+        /**
+         * 累计任务。
+         */
+        public Integer total;
+        /**
+         * 累计完成任务。
+         */
+        public Integer finished;
+        /**
+         * 累计天数。
+         */
+        public Integer days;
+        /**
+         * 累计连续天数。
+         */
+        public Integer rowDays;
+    }
 }

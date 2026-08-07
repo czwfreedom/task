@@ -3,6 +3,7 @@ package com.haole.task.service.impl;
 import com.haole.task.constants.ErrorCode;
 import com.haole.task.dao.RoutineDao;
 import com.haole.task.model.dto.BaseResponse;
+import com.haole.task.model.dto.DataResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
@@ -16,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 日常服务
@@ -108,5 +110,47 @@ public class RoutineServiceImpl implements RoutineService {
             result.forEach(RoutineDTO::adapt);
         }
         return new RoutinePojos.Response(result);
+    }
+
+    @Override
+    public BaseResponse stat(Long userId) {
+        RoutinePojos.Stat stat = new RoutinePojos.Stat();
+        // 直接从表查，未来数据大了再优化
+        Map<String, Integer> totalStat = routineDao.selectTotalStat(userId);
+        if (totalStat != null && !totalStat.isEmpty()) {
+            stat.total = totalStat.get("total");
+            stat.finished = totalStat.get("finished");
+            stat.days = totalStat.get("days");
+        }
+
+        // 计算连续天数
+        List<Date> dates = routineDao.selectDistinctDates(userId);
+        stat.rowDays = calcRowDays(dates);
+
+        return new DataResponse<>(stat);
+    }
+
+    /**
+     * 从有序日期列表（desc）计算连续天数。
+     */
+    private int calcRowDays(List<Date> dates) {
+        if (dates == null || dates.isEmpty()) {
+            return 0;
+        }
+        int rowDays = 0;
+        Long expectedDay = null;
+        for (Date d : dates) {
+            long day = d.getTime();
+            if (expectedDay == null) {
+                expectedDay = day;
+                rowDays = 1;
+            } else if (expectedDay - day == 86400000L) {
+                expectedDay = day;
+                rowDays++;
+            } else {
+                break;
+            }
+        }
+        return rowDays;
     }
 }

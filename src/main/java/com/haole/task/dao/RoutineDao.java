@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface RoutineDao {
@@ -22,6 +23,9 @@ public interface RoutineDao {
 
     List<StatEntity> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
 
+    Map<String, Integer> selectTotalStat(@Param("userId") Long userId);
+
+    List<Date> selectDistinctDates(@Param("userId") Long userId);
 
     int updateByPrimaryKeySelective(Routine record);
 }

@@ -75,4 +75,10 @@ public class RoutineController {
                 request.getDate() != null ? request.getDate().getTime() : System.currentTimeMillis())));
         return routineService.list(userId, request);
     }
+
+    @RequestLog
+    @PostMapping("/v1/routine/stat")
+    public BaseResponse stat(@RequestHeader(Constants.HEADER_USER_ID) Long userId) {
+        return routineService.stat(userId);
+    }
 }

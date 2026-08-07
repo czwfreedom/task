@@ -21,4 +21,9 @@ public interface RoutineService {
      * 新增。
      */
     BaseResponse list(Long userId, RoutinePojos.ListRequest request);
+
+    /**
+     * 统计。
+     */
+    BaseResponse stat(Long userId);
 }
