@@ -39,9 +39,16 @@ public interface RelationPojos {
         }
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    class StatResponse extends BaseResponse {
+    class Stat {
         public Integer useeCount;
         public Integer userCount;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    class StatResponse extends DataResponse<Stat> {
+
+        public StatResponse(Stat data) {
+            super(data);
+        }
     }
 }

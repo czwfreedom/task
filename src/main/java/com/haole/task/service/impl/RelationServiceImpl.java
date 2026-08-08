@@ -160,9 +160,9 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public BaseResponse stat(Long userId) {
-        RelationPojos.StatResponse response = new RelationPojos.StatResponse();
-        response.useeCount = relationDao.selectUseeCount(userId);
-        response.userCount = relationDao.selectUserCount(userId);
-        return response;
+        RelationPojos.Stat stat = new RelationPojos.Stat();
+        stat.useeCount = relationDao.selectUseeCount(userId);
+        stat.userCount = relationDao.selectUserCount(userId);
+        return new RelationPojos.StatResponse(stat);
     }
 }
