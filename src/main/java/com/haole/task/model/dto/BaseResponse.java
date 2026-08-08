@@ -12,10 +12,10 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
 
-    @JsonProperty("errno")
+    @JsonProperty("errcode")
     public int errorCode = ErrorCode.OK;
 
-    @JsonProperty("msg")
+    @JsonProperty("errmsg")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String errorMessage;
 
