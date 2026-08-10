@@ -127,6 +127,9 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public BaseResponse list(Long userId, RelationPojos.ListRequest request) {
+        if (request.getDeleted() == null) {
+            request.setDeleted((byte) 0);
+        }
         List<RelationDTO> relations = relationDao.selectByCondition(request);
         RelationPojos.ListResponse response = new RelationPojos.ListResponse(relations);
         if (CollectionUtils.isEmpty(relations)) {
