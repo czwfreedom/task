@@ -13,6 +13,7 @@ import java.util.List;
 public interface RelationPojos {
 
     class CreateRequest {
+        public String nonce;
         public List<RelationDTO> data;
     }
 

@@ -10,6 +10,7 @@ import com.haole.task.model.entity.Relation;
 import com.haole.task.model.entity.RelationDTO;
 import com.haole.task.model.entity.StatEntity;
 import com.haole.task.model.entity.UserDTO;
+import com.haole.task.service.NonceService;
 import com.haole.task.service.RelationService;
 import com.haole.task.utils.DateUtils;
 import com.haole.task.utils.LogUtils;
@@ -36,13 +37,14 @@ public class RelationServiceImpl implements RelationService {
     private final RelationDao relationDao;
     private final UserDao userDao;
     private final RoutineDao routineDao;
+    private final NonceService nonceService;
 
-    public RelationServiceImpl(RelationDao relationDao, UserDao userDao, RoutineDao routineDao) {
+    public RelationServiceImpl(RelationDao relationDao, UserDao userDao, RoutineDao routineDao, NonceService nonceService) {
         this.relationDao = relationDao;
         this.userDao = userDao;
         this.routineDao = routineDao;
+        this.nonceService = nonceService;
     }
-
 
     @Override
     public boolean canManage(Long userId, Long useeId) {
@@ -55,18 +57,22 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public BaseResponse create(Long userId, RelationPojos.CreateRequest request) {
+        List<RelationDTO> result = new ArrayList<>();
+        Boolean nonceValid = null;
+        if (!ObjectUtils.isEmpty(request.nonce)) {
+            nonceValid = nonceService.check(userId, request.nonce);
+            if (Boolean.FALSE.equals(nonceValid)) {
+                return new RelationPojos.Response(result);
+            }
+        }
+
         Relation record = new Relation();
         record.setUserId(userId);
         record.setDeleted((byte) 0);
         // 还不能查删除的关系，可能数据太多撑爆内存
         List<RelationDTO> allExists = relationDao.selectByCondition(record);
-        // 不能关注太多
-        if (allExists.size() + request.data.size() > 64) {
-            return new BaseResponse(ErrorCode.ERR_OVER_LIMIT);
-        }
-
+        int count = allExists.size();
         // 不应该这样做。但目前的场景都是一个个修改的，偷个懒不想加接口了。
-        List<RelationDTO> result = new ArrayList<>();
         for (RelationDTO item : request.data) {
             record = new Relation();
             record.setUserId(item.getUserId());
@@ -75,15 +81,26 @@ public class RelationServiceImpl implements RelationService {
             if (!CollectionUtils.isEmpty(exists)) {
                 // 已存在了？
                 for (RelationDTO exist : exists) {
-                    Relation newRecord = new Relation();
-                    newRecord.setId(exist.getId());
-                    newRecord.setDeleted((byte) 0);
-                    relationDao.updateByPrimaryKeySelective(newRecord);
-
-                    exist.setDeleted((byte) 0);
+                    if (exist.getDeleted() != null && exist.getDeleted() == 1) {
+                        // 不能关注太多
+                        if (count + 1 > 64) {
+                            return new BaseResponse(ErrorCode.ERR_OVER_LIMIT);
+                        }
+                        count++;
+                        Relation newRecord = new Relation();
+                        newRecord.setId(exist.getId());
+                        newRecord.setDeleted((byte) 0);
+                        relationDao.updateByPrimaryKeySelective(newRecord);
+                        exist.setDeleted((byte) 0);
+                    }
                     result.add(exist);
                 }
             } else {
+                // 不能关注太多
+                if (count + 1 > 64) {
+                    return new BaseResponse(ErrorCode.ERR_OVER_LIMIT);
+                }
+                count++;
                 relationDao.insertSelective(record);
                 if (record.getCreateTime() != null) {
                     record.setCreateTime(new Date());
@@ -94,6 +111,9 @@ public class RelationServiceImpl implements RelationService {
 
         for (RelationDTO item : result) {
             item.adapt();
+        }
+        if (nonceValid == null && !ObjectUtils.isEmpty(request.nonce)) {
+            nonceService.create(userId, request.nonce);
         }
         return new RelationPojos.Response(result);
     }

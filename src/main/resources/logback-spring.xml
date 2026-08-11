@@ -41,4 +41,7 @@
 
     <!-- 项目业务日志级别 -->
     <logger name="com.haole.task" level="DEBUG"/>
+
+    <!-- 关闭 SQL 日志输出 -->
+    <logger name="com.haole.task.dao" level="INFO"/>
 </configuration>
