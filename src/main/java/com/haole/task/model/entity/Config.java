@@ -34,6 +34,10 @@ public class Config extends InfoEntity {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
     /**
+     * 详情
+     */
+    private String detail;
+    /**
      * 标签，预留
      */
     private String tag;

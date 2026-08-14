@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `t_config`
     `ref`         bigint(19) COMMENT '预留，用于引用别的表',
     `user_id`     bigint(19) NOT NULL COMMENT '归属用户，为了偷懒，这个也许不是真正的用户',
     `name`        text COMMENT '名字',
+    `detail`      text COMMENT '详情',
     `tag`         text COMMENT '标签，预留',
     `value`       text COMMENT '内容',
     `extra`       text COMMENT '保留扩展',
@@ -129,6 +130,9 @@ CREATE TABLE IF NOT EXISTS `t_config`
     PRIMARY KEY (`id`),
     KEY `USER` (`user_id`)
 ) ENGINE = InnoDB;
+
+ALTER TABLE t_config
+    ADD COLUMN `detail` text COMMENT '详情' AFTER `name`;
 
 # INSERT INTO t_config(id, user_id, name, value)
 # VALUES (65536, 1, '保留', 'retain');

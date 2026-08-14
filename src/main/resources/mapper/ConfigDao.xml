@@ -10,6 +10,7 @@
         <result column="ref" jdbcType="BIGINT" property="ref"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
         <result column="tag" jdbcType="VARCHAR" property="tag"/>
         <result column="value" jdbcType="VARCHAR" property="value"/>
         <result column="extra" jdbcType="VARCHAR" property="extra"/>
@@ -17,11 +18,11 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `type`, used, priority, `ref`, user_id, `name`, tag, `value`, extra,
+        id, deleted, `type`, used, priority, `ref`, user_id, `name`, `detail`, tag, `value`, extra,
     create_time, update_time
     </sql>
     <sql id="Brief_Column_List">
-        id, deleted, `type`, used, priority, `ref`, user_id, `name`, tag, create_time, update_time
+        id, deleted, `type`, used, priority, `ref`, user_id, `name`, `detail`, tag, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -105,6 +106,9 @@
             <if test="name != null">
                 `name`,
             </if>
+            <if test="detail != null">
+                `detail`,
+            </if>
             <if test="tag != null">
                 tag,
             </if>
@@ -146,6 +150,9 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
+            <if test="detail != null">
+                #{detail,jdbcType=VARCHAR},
+            </if>
             <if test="tag != null">
                 #{tag,jdbcType=VARCHAR},
             </if>
@@ -186,6 +193,9 @@
             </if>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                `detail` = #{detail,jdbcType=VARCHAR},
             </if>
             <if test="tag != null">
                 tag = #{tag,jdbcType=VARCHAR},
