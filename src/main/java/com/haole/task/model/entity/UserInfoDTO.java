@@ -1,10 +1,12 @@
 package com.haole.task.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 /**
- * 每日任务。
+ * 用户DTO
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RoutineDTO extends Routine {
+@Data
+public class UserInfoDTO extends UserInfo {
 }

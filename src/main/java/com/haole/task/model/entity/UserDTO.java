@@ -15,10 +15,10 @@ public class UserDTO extends User {
      */
     public StatEntity routine;
 
+    @Override
     public void adapt() {
-        setUpdateTime(null);
+        super.adapt();
         setOpenId(null);
-        setDeleted(null);
     }
 
     public void adaptMore() {

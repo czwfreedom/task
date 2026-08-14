@@ -6,29 +6,16 @@ import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.ser.std.ToStringSerializer;
 
 /**
- * t_relation
+ * t_user_info
  */
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Relation extends DBEntity {
+@Data
+public class UserInfo extends DBEntity {
     /**
-     * 类型，保留
-     */
-    private Byte type;
-    /**
-     * 用户
+     * 日程模板
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
-    /**
-     * 被关注用户
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long useeId;
-    /**
-     * 备注
-     */
-    private String remark;
+    private Long routineTemplate;
     /**
      * 保留扩展
      */

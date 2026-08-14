@@ -24,6 +24,20 @@ CREATE TABLE IF NOT EXISTS `t_user`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE IF NOT EXISTS `t_user_info`
+(
+    `id`               bigint(19) NOT NULL AUTO_INCREMENT,
+    `deleted`          tinyint    NOT NULL DEFAULT 0 COMMENT '是否已删除',
+
+    `routine_template` bigint(19) COMMENT '日程模板',
+    `extra`            text COMMENT '保留扩展',
+    `create_time`      datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`      datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+
 
 CREATE TABLE IF NOT EXISTS `t_routine`
 (
@@ -116,4 +130,5 @@ CREATE TABLE IF NOT EXISTS `t_config`
     KEY `USER` (`user_id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO t_config(id, user_id, name, value) VALUES (65536, 1, '保留', 'retain');
+# INSERT INTO t_config(id, user_id, name, value)
+# VALUES (65536, 1, '保留', 'retain');

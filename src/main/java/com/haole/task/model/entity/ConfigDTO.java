@@ -7,9 +7,4 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConfigDTO extends Config {
-
-    public void adapt() {
-        setDeleted(null);
-        setUpdateTime(null);
-    }
 }

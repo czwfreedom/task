@@ -7,8 +7,4 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RelationDTO extends Relation {
-    public void adapt() {
-        setUpdateTime(null);
-        setDeleted(null);
-    }
 }

@@ -7,9 +7,4 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class NonceDTO extends Nonce {
-
-    public void adapt() {
-        setUpdateTime(null);
-        setDeleted(null);
-    }
 }
