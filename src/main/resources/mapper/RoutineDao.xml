@@ -66,6 +66,9 @@
             useGeneratedKeys="true">
         insert into t_routine
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
             <if test="status != null">
                 `status`,
             </if>
@@ -119,6 +122,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
             <if test="deleted != null">
                 #{deleted,jdbcType=TINYINT},
             </if>

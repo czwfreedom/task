@@ -9,6 +9,7 @@ import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
 import com.haole.task.service.RelationService;
 import com.haole.task.service.RoutineService;
+import com.haole.task.utils.IdGenerator;
 import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class RoutineServiceImpl implements RoutineService {
                 LogUtils.logWarn(log, "RoutineExist", item.getTransaction());
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
-
+            item.setId(IdGenerator.nextId());
             routineDao.insertSelective(item);
             item.adapt();
         }

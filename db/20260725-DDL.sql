@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `t_nonce`
     `update_time` datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `IX_VALUE` (`value`)
-) ENGINE = InnoDB
+) ENGINE = InnoDB;
 
 # CREATE UNIQUE INDEX `TRANSACTION` ON t_routine (`transaction`);
 
@@ -95,3 +95,25 @@ CREATE TABLE IF NOT EXISTS `t_nonce`
 #     ADD COLUMN `duration` bigint COMMENT '计划任务时长' AFTER user_id;
 # ALTER TABLE t_routine
 #     ADD COLUMN `plan_time` datetime COMMENT '计划时间' AFTER `date`;
+
+# 配置表。
+CREATE TABLE IF NOT EXISTS `t_config`
+(
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `deleted`     tinyint    NOT NULL DEFAULT 0 COMMENT '是否已删除',
+    `type`        tinyint    NOT NULL DEFAULT 0 COMMENT '类型，保留',
+    `used`        int COMMENT '已用次数',
+    `priority`    int COMMENT '优先级，预留',
+    `ref`         bigint(19) COMMENT '预留，用于引用别的表',
+    `user_id`     bigint(19) NOT NULL COMMENT '归属用户，为了偷懒，这个也许不是真正的用户',
+    `name`        text COMMENT '名字',
+    `tag`         text COMMENT '标签，预留',
+    `value`       text COMMENT '内容',
+    `extra`       text COMMENT '保留扩展',
+    `create_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `USER` (`user_id`)
+) ENGINE = InnoDB;
+
+INSERT INTO t_config(id, user_id, name, value) VALUES (65536, 1, '保留', 'retain');

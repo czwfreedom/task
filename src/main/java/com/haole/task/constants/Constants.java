@@ -8,4 +8,12 @@ public interface Constants {
     String HEADER_USER_TOKEN = "user-token";
 
     String ENTITY_KEY_GENERATOR = "entityKeyGenerator";
+
+
+    interface User {
+        /**
+         * 表示1为系统预留。
+         */
+        Long SYSTEM = 1L;
+    }
 }

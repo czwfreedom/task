@@ -13,6 +13,15 @@ public class DataResponse<T> extends BaseResponse {
     @JsonProperty("data")
     private T data;
 
+    public DataResponse() {
+        super();
+    }
+
+    public DataResponse(int errCode) {
+        super(errCode);
+    }
+
+
     public DataResponse(T data) {
         super();
         this.data = data;

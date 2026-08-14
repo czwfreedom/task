@@ -8,6 +8,7 @@ import java.security.SecureRandom;
  */
 public final class IdGenerator {
 
+    public static final long MIN = 0x1ffff; // 保留一些低位空间。
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private IdGenerator() {
@@ -21,7 +22,7 @@ public final class IdGenerator {
         long id;
         do {
             id = RANDOM.nextLong();
-        } while (id <= 0);
+        } while (id <= MIN);
         return id;
     }
 
@@ -33,7 +34,7 @@ public final class IdGenerator {
         long id;
         do {
             id = RANDOM.nextLong() & 0x0000_FFFF_FFFF_FFFFL;
-        } while (id <= 0);
+        } while (id <= MIN);
         return id;
     }
 }

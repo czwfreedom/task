@@ -35,4 +35,9 @@ public interface ErrorCode {
      */
     int ERR_OVER_LIMIT = 10006;
 
+    /**
+     * 未知的错误。
+     */
+    int ERR_SERVER_FAILED = 20001;
+
 }
