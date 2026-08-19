@@ -1,8 +1,10 @@
 package com.haole.task.service.impl;
 
 import com.haole.task.constants.ErrorCode;
+import com.haole.task.dao.CommentDao;
 import com.haole.task.dao.RoutineDao;
 import com.haole.task.model.dto.BaseResponse;
+import com.haole.task.model.dto.CommentPojos;
 import com.haole.task.model.dto.DataResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 日常服务
@@ -28,10 +32,12 @@ public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineDao routineDao;
     private final RelationService relationService;
+    private final CommentDao commentDao;
 
-    public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService) {
+    public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService, CommentDao commentDao) {
         this.routineDao = routineDao;
         this.relationService = relationService;
+        this.commentDao = commentDao;
     }
 
     @Override
@@ -117,6 +123,18 @@ public class RoutineServiceImpl implements RoutineService {
         List<RoutineDTO> result = routineDao.selectByCondition(request);
         if (!CollectionUtils.isEmpty(result)) {
             result.forEach(RoutineDTO::adapt);
+            if (Boolean.TRUE.equals(request.withStat)) {
+                Map<Long, CommentPojos.Stat> stats = commentDao.selectStat(
+                                result.stream().map(RoutineDTO::getId).collect(Collectors.toList()))
+                        .stream().collect(Collectors.toMap(CommentPojos.Stat::getId, Function.identity()));
+                for (RoutineDTO routine : result) {
+                    CommentPojos.Stat stat = stats.get(routine.getId());
+                    if (stat != null) {
+                        stat.adapt();
+                        routine.stat = stat;
+                    }
+                }
+            }
         }
         return new RoutinePojos.Response(result);
     }

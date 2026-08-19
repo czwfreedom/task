@@ -4,10 +4,18 @@ import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.CommentPojos;
 import com.haole.task.model.entity.CommentDTO;
 
+import java.util.List;
+
 /**
  * 评论。
  */
 public interface CommentService {
+
+    /**
+     * 获取评论统计。
+     */
+    List<CommentPojos.Stat> getStat(List<Long> refs);
+
     /**
      * 创建评论。
      */

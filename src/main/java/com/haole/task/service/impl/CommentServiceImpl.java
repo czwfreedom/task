@@ -43,6 +43,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<CommentPojos.Stat> getStat(List<Long> refs) {
+        return commentDao.selectStat(refs);
+    }
+
+    @Override
     public BaseResponse create(Long userId, CommentDTO request) {
         if (CommentType.ROUTINE.equals(request.getType())) {
             return createRoutine(userId, request);

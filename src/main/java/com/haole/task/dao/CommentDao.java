@@ -18,7 +18,7 @@ public interface CommentDao {
 
     List<CommentDTO> selectByRef(@Param("id") Long id, @Param("attrs") Byte attrs);
 
-    // List<CommentPojos.Stat> selectStat(@Param("refs") List<Long> refs);
+    List<CommentPojos.Stat> selectStat(@Param("refs") List<Long> refs);
 
     int updateByPrimaryKeySelective(Comment record);
 }

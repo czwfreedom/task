@@ -179,4 +179,17 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="selectStat" resultType="com.haole.task.model.dto.CommentPojos$Stat">
+        select `ref` as id,
+        sum(case when (attrs &amp; 1) = 1 then 1 else 0 end) as `count`,
+        sum(case when (attrs &amp; 2) = 2 then 1 else 0 end) as comment
+        from t_comment
+        where `ref` in
+        <foreach collection="refs" item="ref" open="(" close=")" separator=",">
+            #{ref,jdbcType=BIGINT}
+        </foreach>
+        AND attrs != 0 AND deleted = 0
+        group by `ref`
+    </select>
 </mapper>
