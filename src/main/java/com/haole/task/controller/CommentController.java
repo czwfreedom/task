@@ -39,9 +39,6 @@ public class CommentController {
         if (request.getType() == null) {
             request.setType(CommentType.ROUTINE);
         }
-        if (!ObjectUtils.isEmpty(request.getDetail())) {
-            request.setComment((byte) 1);
-        }
 
         request.setUserId(userId);
         return commentService.create(userId, request);
