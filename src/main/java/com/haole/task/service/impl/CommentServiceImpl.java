@@ -1,6 +1,5 @@
 package com.haole.task.service.impl;
 
-import com.haole.task.constants.CommentAttr;
 import com.haole.task.constants.CommentType;
 import com.haole.task.constants.ErrorCode;
 import com.haole.task.dao.CommentDao;
@@ -15,7 +14,6 @@ import com.haole.task.service.RoutineService;
 import com.haole.task.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,13 +55,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public BaseResponse list(Long userId, CommentPojos.ListRequest request) {
-        if (request.getAttrs() == null) {
-            request.setAttrs(CommentAttr.ALL);
-        }
         // 这里有个权限没有校验。
         List<CommentDTO> comments = null;
         if (request.getRef() != null) {
-            comments = commentDao.selectByRef(request.getRef(), request.getAttrs());
+            comments = commentDao.selectByRef(request.getRef(), request.getPraise(), request.getComment());
         }
 
         if (!CollectionUtils.isEmpty(comments)) {
@@ -89,13 +84,10 @@ public class CommentServiceImpl implements CommentService {
             return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
         }
 
-        if (request.getDetail() != null && request.getDetail().isEmpty() && (comment.getAttrs() & CommentAttr.COMMENT) != 0) {
-            request.setAttrs((byte) (comment.getAttrs() & ~CommentAttr.COMMENT));
-        } else if (!ObjectUtils.isEmpty(request.getDetail())) {
-            request.setAttrs((byte) (comment.getAttrs() | CommentAttr.COMMENT));
-        } else if (request.getAttrs() != null && request.getAttrs() == 0) {
-            request.setAttrs((byte) (comment.getAttrs() & ~CommentAttr.LIKE));
+        if (request.getDetail() != null) {
+            request.setComment((byte) (request.getDetail().isEmpty() ? 0 : 1));
         }
+
         request.setUpdateTime(new Date());
         commentDao.updateByPrimaryKeySelective(request);
 
@@ -115,12 +107,16 @@ public class CommentServiceImpl implements CommentService {
         if (!relationService.canManage(userId, routine.getUserId())) {
             return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
         }
-        if ((request.getAttrs() & CommentAttr.LIKE) != 0) {
+        if (request.getPraise() != null && request.getPraise() != 0) {
             request.setPraiseTime(new Date());
         }
 
-        if ((request.getAttrs() & CommentAttr.COMMENT) != 0) {
+        if (request.getComment() != null && request.getComment() != 0) {
             request.setCommentTime(new Date());
+        }
+
+        if (request.getComment() == null && request.getDetail() != null && request.getDetail().isEmpty()) {
+            request.setComment((byte) 0);
         }
 
         int effected = commentDao.insertSelective(request);

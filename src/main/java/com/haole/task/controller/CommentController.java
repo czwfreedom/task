@@ -1,7 +1,6 @@
 package com.haole.task.controller;
 
 import com.haole.task.aop.RequestLog;
-import com.haole.task.constants.CommentAttr;
 import com.haole.task.constants.CommentType;
 import com.haole.task.constants.Constants;
 import com.haole.task.constants.ErrorCode;
@@ -40,12 +39,8 @@ public class CommentController {
         if (request.getType() == null) {
             request.setType(CommentType.ROUTINE);
         }
-        if (request.getAttrs() == null) {
-            if (!ObjectUtils.isEmpty(request.getDetail())) {
-                request.setAttrs(CommentAttr.COMMENT);
-            } else {
-                request.setAttrs(CommentAttr.LIKE);
-            }
+        if (!ObjectUtils.isEmpty(request.getDetail())) {
+            request.setComment((byte) 1);
         }
 
         request.setUserId(userId);

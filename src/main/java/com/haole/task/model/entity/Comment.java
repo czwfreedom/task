@@ -19,9 +19,15 @@ public class Comment extends DBEntity {
      */
     private Byte type;
     /**
-     * 是否点赞/是否评论
+     * 是否点赞
      */
-    private Byte attrs;
+    private Byte praise;
+
+    /**
+     * 是否评论
+     */
+    private Byte comment;
+
     /**
      * 用于引用别的表
      */

@@ -16,7 +16,7 @@ public interface CommentDao {
 
     CommentDTO selectByPrimaryKey(Long id);
 
-    List<CommentDTO> selectByRef(@Param("id") Long id, @Param("attrs") Byte attrs);
+    List<CommentDTO> selectByRef(@Param("id") Long id, @Param("praise") Byte praise, @Param("comment") Byte comment);
 
     List<CommentPojos.Stat> selectStat(@Param("userId") Long userId, @Param("refs") List<Long> refs);
 

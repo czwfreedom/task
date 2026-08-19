@@ -5,7 +5,8 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
-        <result column="attrs" jdbcType="TINYINT" property="attrs"/>
+        <result column="praise" jdbcType="TINYINT" property="praise"/>
+        <result column="comment" jdbcType="TINYINT" property="comment"/>
         <result column="ref" jdbcType="BIGINT" property="ref"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="detail" jdbcType="VARCHAR" property="detail"/>
@@ -17,7 +18,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `type`, attrs, `ref`, user_id, detail, medias, extra, praise_time, comment_time,
+        id, deleted, `type`, `praise`, `comment`, `ref`, user_id, detail, medias, extra, praise_time, comment_time,
     create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -31,7 +32,14 @@
         select
         <include refid="Base_Column_List"/>
         from t_comment
-        where `ref` = #{id,jdbcType=BIGINT} AND attrs &amp; #{attrs,jdbcType=TINYINT} != 0 AND deleted = 0
+        where `ref` = #{id,jdbcType=BIGINT}
+        <if test="praise != null">
+            and `praise` = #{praise,jdbcType=TINYINT}
+        </if>
+        <if test="comment != null">
+            and `comment` = #{comment,jdbcType=TINYINT}
+        </if>
+        AND deleted = 0
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -49,8 +57,11 @@
             <if test="type != null">
                 `type`,
             </if>
-            <if test="attrs != null">
-                attrs,
+            <if test="praise != null">
+                praise,
+            </if>
+            <if test="comment != null">
+                `comment`,
             </if>
             <if test="ref != null">
                 `ref`,
@@ -87,8 +98,11 @@
             <if test="type != null">
                 #{type,jdbcType=TINYINT},
             </if>
-            <if test="attrs != null">
-                #{attrs,jdbcType=TINYINT},
+            <if test="praise != null">
+                #{praise,jdbcType=TINYINT},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=TINYINT},
             </if>
             <if test="ref != null">
                 #{ref,jdbcType=BIGINT},
@@ -120,8 +134,11 @@
         </trim>
         ON DUPLICATE KEY UPDATE
         <trim suffixOverrides=",">
-            <if test="attrs != null">
-                attrs = attrs | #{attrs,jdbcType=TINYINT},
+            <if test="praise != null">
+                praise = #{praise,jdbcType=TINYINT},
+            </if>
+            <if test="comment != null">
+                `comment` = #{comment,jdbcType=TINYINT},
             </if>
             <if test="detail != null">
                 detail = #{detail,jdbcType=VARCHAR},
@@ -146,8 +163,11 @@
             <if test="type != null">
                 `type` = #{type,jdbcType=TINYINT},
             </if>
-            <if test="attrs != null">
-                attrs = #{attrs,jdbcType=TINYINT},
+            <if test="praise != null">
+                praise = #{praise,jdbcType=TINYINT},
+            </if>
+            <if test="comment != null">
+                `comment` = #{comment,jdbcType=TINYINT},
             </if>
             <if test="ref != null">
                 `ref` = #{ref,jdbcType=BIGINT},
@@ -182,16 +202,16 @@
 
     <select id="selectStat" resultType="com.haole.task.model.dto.CommentPojos$Stat">
         select `ref` as id,
-        sum(case when (attrs &amp; 1) = 1 then 1 else 0 end) as `count`,
-        sum(case when (attrs &amp; 2) = 2 then 1 else 0 end) as comment,
-        max(case when user_id = #{userId,jdbcType=BIGINT} and (attrs &amp; 1) = 1 then 1 else 0 end) as liked,
-        max(case when user_id = #{userId,jdbcType=BIGINT} and (attrs &amp; 2) = 2 then 1 else 0 end) as commented
+        sum(praise) as `count`,
+        sum(comment) as comment,
+        max(case when user_id = #{userId,jdbcType=BIGINT} and praise = 1 then 1 else 0 end) as liked,
+        max(case when user_id = #{userId,jdbcType=BIGINT} and comment = 1 then 1 else 0 end) as commented
         from t_comment
         where `ref` in
         <foreach collection="refs" item="ref" open="(" close=")" separator=",">
             #{ref,jdbcType=BIGINT}
         </foreach>
-        AND attrs != 0 AND deleted = 0
+        AND (praise = 1 OR comment = 1) AND deleted = 0
         group by `ref`
     </select>
 </mapper>
