@@ -14,7 +14,7 @@ public interface CommentService {
     /**
      * 获取评论统计。
      */
-    List<CommentPojos.Stat> getStat(List<Long> refs);
+    List<CommentPojos.Stat> getStat(Long userId, List<Long> refs);
 
     /**
      * 创建评论。

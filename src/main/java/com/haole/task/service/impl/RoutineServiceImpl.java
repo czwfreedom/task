@@ -124,7 +124,7 @@ public class RoutineServiceImpl implements RoutineService {
         if (!CollectionUtils.isEmpty(result)) {
             result.forEach(RoutineDTO::adapt);
             if (Boolean.TRUE.equals(request.withStat)) {
-                Map<Long, CommentPojos.Stat> stats = commentDao.selectStat(
+                Map<Long, CommentPojos.Stat> stats = commentDao.selectStat(userId,
                                 result.stream().map(RoutineDTO::getId).collect(Collectors.toList()))
                         .stream().collect(Collectors.toMap(CommentPojos.Stat::getId, Function.identity()));
                 for (RoutineDTO routine : result) {

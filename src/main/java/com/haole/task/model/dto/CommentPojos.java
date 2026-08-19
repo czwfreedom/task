@@ -27,5 +27,7 @@ public interface CommentPojos {
 
     class Stat extends StatEntity {
         public Integer comment;
+        public Integer liked;
+        public Integer commented;
     }
 }

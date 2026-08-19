@@ -43,8 +43,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentPojos.Stat> getStat(List<Long> refs) {
-        return commentDao.selectStat(refs);
+    public List<CommentPojos.Stat> getStat(Long userId, List<Long> refs) {
+        return commentDao.selectStat(userId, refs);
     }
 
     @Override
