@@ -131,8 +131,29 @@ CREATE TABLE IF NOT EXISTS `t_config`
     KEY `USER` (`user_id`)
 ) ENGINE = InnoDB;
 
-ALTER TABLE t_config
-    ADD COLUMN `detail` text COMMENT '详情' AFTER `name`;
+# ALTER TABLE t_config
+#     ADD COLUMN `detail` text COMMENT '详情' AFTER `name`;
 
 # INSERT INTO t_config(id, user_id, name, value)
 # VALUES (65536, 1, '保留', 'retain');
+
+
+# 评论或者点赞
+CREATE TABLE IF NOT EXISTS `t_comment`
+(
+    `id`           bigint(19) NOT NULL AUTO_INCREMENT,
+    `deleted`      tinyint    NOT NULL DEFAULT 0 COMMENT '是否已删除',
+    `type`         tinyint    NOT NULL DEFAULT 0 COMMENT '类型，保留',
+    `attrs`        tinyint             DEFAULT 0 COMMENT '是否点赞/是否评论',
+    `ref`          bigint(19) COMMENT '用于引用别的表',
+    `user_id`      bigint(19) NOT NULL COMMENT '归属用户',
+    `detail`       text COMMENT '详情',
+    `medias`       text COMMENT '图片或者视频详情',
+    `extra`        text COMMENT '保留扩展',
+    `praise_time`  datetime COMMENT '点赞时间',
+    `comment_time` datetime COMMENT '评论时间',
+    `create_time`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`  datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `REF` (`ref`, `user_id`, `type`)
+) ENGINE = InnoDB;

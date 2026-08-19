@@ -3,7 +3,6 @@ package com.haole.task.service.impl;
 import com.haole.task.constants.ErrorCode;
 import com.haole.task.dao.RelationDao;
 import com.haole.task.dao.RoutineDao;
-import com.haole.task.dao.UserDao;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.RelationPojos;
 import com.haole.task.model.entity.Relation;
@@ -12,6 +11,7 @@ import com.haole.task.model.entity.StatEntity;
 import com.haole.task.model.entity.UserDTO;
 import com.haole.task.service.NonceService;
 import com.haole.task.service.RelationService;
+import com.haole.task.service.UserService;
 import com.haole.task.utils.DateUtils;
 import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
@@ -35,13 +35,13 @@ public class RelationServiceImpl implements RelationService {
     private static final Logger log = LogUtils.getLogger(RelationService.class.getSimpleName());
 
     private final RelationDao relationDao;
-    private final UserDao userDao;
+    private final UserService userService;
     private final RoutineDao routineDao;
     private final NonceService nonceService;
 
-    public RelationServiceImpl(RelationDao relationDao, UserDao userDao, RoutineDao routineDao, NonceService nonceService) {
+    public RelationServiceImpl(RelationDao relationDao, UserService userService, RoutineDao routineDao, NonceService nonceService) {
         this.relationDao = relationDao;
-        this.userDao = userDao;
+        this.userService = userService;
         this.routineDao = routineDao;
         this.nonceService = nonceService;
     }
@@ -158,7 +158,7 @@ public class RelationServiceImpl implements RelationService {
 
         List<Long> userIds = relations.stream()
                 .map(o -> !ObjectUtils.isEmpty(request.getUserId()) ? o.getUseeId() : o.getUserId()).toList();
-        List<UserDTO> users = userDao.selectByIds(userIds, false);
+        List<UserDTO> users = userService.get(userIds, false);
         Map<Long, StatEntity> stats = null;
         if (!ObjectUtils.isEmpty(request.getUserId()) && Boolean.TRUE.equals(request.withStat) &&
                 !CollectionUtils.isEmpty(userIds)) {

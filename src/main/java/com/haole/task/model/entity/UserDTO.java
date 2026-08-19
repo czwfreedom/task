@@ -25,5 +25,6 @@ public class UserDTO extends User {
         this.adapt();
         this.setToken(null);
         this.setRoles(null);
+        this.setLoginTime(null);
     }
 }

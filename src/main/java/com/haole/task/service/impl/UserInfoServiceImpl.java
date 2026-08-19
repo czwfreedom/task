@@ -1,11 +1,11 @@
 package com.haole.task.service.impl;
 
-import com.haole.task.dao.ConfigDao;
 import com.haole.task.dao.UserInfoDao;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.UserInfoPojos;
 import com.haole.task.model.entity.ConfigDTO;
 import com.haole.task.model.entity.UserInfoDTO;
+import com.haole.task.service.ConfigService;
 import com.haole.task.service.UserInfoService;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +18,11 @@ import java.util.Date;
 public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoDao userInfoDao;
-    private final ConfigDao configDao;
+    private final ConfigService configService;
 
-    public UserInfoServiceImpl(UserInfoDao userInfoDao, ConfigDao configDao) {
+    public UserInfoServiceImpl(UserInfoDao userInfoDao, ConfigService configService) {
         this.userInfoDao = userInfoDao;
-        this.configDao = configDao;
+        this.configService = configService;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         if (info.getRoutineTemplate() != null) {
-            ConfigDTO config = configDao.selectByPrimaryKey(info.getRoutineTemplate());
+            ConfigDTO config = configService.get(info.getRoutineTemplate());
             if (config != null) {
                 config.adapt();
                 response.routineTemplate = config;

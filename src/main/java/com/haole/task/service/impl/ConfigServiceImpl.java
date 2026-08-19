@@ -27,6 +27,11 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    public ConfigDTO get(Long id) {
+        return configDao.selectByPrimaryKey(id);
+    }
+
+    @Override
     public BaseResponse create(Long userId, ConfigDTO request) {
         List<ConfigDTO> exists = configDao.selectBy(null, Collections.singletonList(userId), null,
                 Collections.singletonList(request.getType()), false);

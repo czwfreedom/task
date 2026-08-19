@@ -7,6 +7,7 @@ import com.haole.task.model.dto.DataResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
+import com.haole.task.model.entity.StatEntity;
 import com.haole.task.service.RelationService;
 import com.haole.task.service.RoutineService;
 import com.haole.task.utils.IdGenerator;
@@ -15,10 +16,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 日常服务
@@ -34,6 +32,16 @@ public class RoutineServiceImpl implements RoutineService {
     public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService) {
         this.routineDao = routineDao;
         this.relationService = relationService;
+    }
+
+    @Override
+    public RoutineDTO get(Long id) {
+        return routineDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<StatEntity> getStat(Collection<Long> userIds, Date date) {
+        return routineDao.selectCount(userIds, date);
     }
 
     @Override

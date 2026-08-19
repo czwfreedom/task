@@ -1,5 +1,6 @@
 package com.haole.task.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.haole.task.model.entity.ConfigDTO;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ public interface ConfigPojos {
         public Boolean brief;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     class ListResponse extends DataResponse<List<ConfigDTO>> {
         public ListResponse(List<ConfigDTO> data) {
             super(data);

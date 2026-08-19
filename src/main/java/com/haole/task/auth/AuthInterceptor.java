@@ -2,9 +2,9 @@ package com.haole.task.auth;
 
 import com.haole.task.constants.Constants;
 import com.haole.task.constants.ErrorCode;
-import com.haole.task.dao.UserDao;
 import com.haole.task.model.entity.UserDTO;
 import com.haole.task.service.PermissionService;
+import com.haole.task.service.UserService;
 import com.haole.task.utils.LogUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,10 +25,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LogUtils.getLogger(AuthInterceptor.class.getSimpleName());
 
-    private final UserDao userDao;
+    private final UserService userService;
 
-    public AuthInterceptor(UserDao userDao) {
-        this.userDao = userDao;
+    public AuthInterceptor(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        UserDTO user = userDao.selectByPrimaryKey(id);
+        UserDTO user = userService.get(id);
         if (user == null || !userToken.equals(user.getToken())) {
             writeError(response, ErrorCode.ERR_INVALID_TOKEN);
             return false;

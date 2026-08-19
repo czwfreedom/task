@@ -8,6 +8,8 @@ import com.haole.task.model.entity.UserDTO;
 import com.haole.task.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 日常服务
  */
@@ -20,6 +22,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO get(Long id) {
+        return userDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<UserDTO> get(List<Long> ids, Boolean withDetail) {
+        return userDao.selectByIds(ids, withDetail);
+    }
+
+    @Override
     public BaseResponse update(Long userId, UserDTO request) {
         User newRecord = new User();
         newRecord.setId(request.getId());
@@ -28,7 +40,7 @@ public class UserServiceImpl implements UserService {
         newRecord.setAvatar(request.getAvatar());
         newRecord.setPhone(request.getPhone());
         userDao.updateByPrimaryKeySelective(newRecord);
-        
+
         UserDTO user = userDao.selectByPrimaryKey(userId);
         user.adapt();
         return new DataResponse<>(user);

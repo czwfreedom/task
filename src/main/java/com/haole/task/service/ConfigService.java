@@ -8,6 +8,11 @@ import com.haole.task.model.entity.ConfigDTO;
  * 配置。
  */
 public interface ConfigService {
+    /**
+     * 把Dao封装起来。
+     */
+    ConfigDTO get(Long id);
+
 
     /**
      * 创建配置。
