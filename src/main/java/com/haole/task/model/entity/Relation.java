@@ -16,6 +16,10 @@ public class Relation extends DBEntity {
      */
     private Byte type;
     /**
+     * 星标
+     */
+    private Byte star;
+    /**
      * 用户
      */
     @JsonSerialize(using = ToStringSerializer.class)

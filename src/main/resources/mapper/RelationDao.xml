@@ -5,6 +5,7 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="star" jdbcType="TINYINT" property="star"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="usee_id" jdbcType="BIGINT" property="useeId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -13,7 +14,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `type`, user_id, usee_id, remark, extra, create_time, update_time
+        id, deleted, `type`, `star`, user_id, usee_id, remark, extra, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -32,6 +33,9 @@
             </if>
             <if test="useeId != null">
                 and usee_id = #{useeId,jdbcType=BIGINT}
+            </if>
+            <if test="star != null">
+                and `star` = #{star,jdbcType=SMALLINT}
             </if>
             <if test="deleted != null">
                 and deleted = #{deleted,jdbcType=SMALLINT}
@@ -53,6 +57,9 @@
             </if>
             <if test="type != null">
                 `type`,
+            </if>
+            <if test="star != null">
+                `star`,
             </if>
             <if test="userId != null">
                 user_id,
@@ -79,6 +86,9 @@
             </if>
             <if test="type != null">
                 #{type,jdbcType=TINYINT},
+            </if>
+            <if test="star != null">
+                #{star,jdbcType=TINYINT},
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
@@ -108,6 +118,9 @@
             </if>
             <if test="type != null">
                 `type` = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="star != null">
+                `star` = #{star,jdbcType=TINYINT},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},

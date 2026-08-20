@@ -54,8 +54,8 @@ public class RelationController {
             return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
         }
         for (RelationDTO item : request.data) {
-            if (item.getId() == null ||
-                    (item.getDeleted() == null && ObjectUtils.isEmpty(item.getRemark()) && ObjectUtils.isEmpty(item.getExtra()))) {
+            if (item.getId() == null || (item.getDeleted() == null && ObjectUtils.isEmpty(item.getRemark()) &&
+                    ObjectUtils.isEmpty(item.getExtra()) && item.getStar() == null)) {
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
         }

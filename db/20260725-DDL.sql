@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `t_relation`
     `id`          bigint(19) NOT NULL AUTO_INCREMENT,
     `deleted`     tinyint    NOT NULL DEFAULT 0 COMMENT '是否已删除',
     `type`        tinyint COMMENT '类型，保留',
+    `star`        tinyint             DEFAULT 0 COMMENT '是否星标',
 
     `user_id`     bigint(19) NOT NULL COMMENT '用户',
     `usee_id`     bigint(19) NOT NULL COMMENT '被关注用户',
@@ -86,6 +87,9 @@ CREATE TABLE IF NOT EXISTS `t_relation`
     KEY `USEE` (`usee_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+# ALTER TABLE t_relation
+#     ADD COLUMN `star` tinyint DEFAULT 0 COMMENT '是否星标' AFTER `type`;
 
 CREATE TABLE IF NOT EXISTS `t_nonce`
 (
