@@ -27,6 +27,11 @@ public interface RoutinePojos {
         public Boolean withStat;
     }
 
+
+    class UserStat extends StatEntity {
+        public Integer finished;
+    }
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     class Stat {
         /**

@@ -3,7 +3,6 @@ package com.haole.task.service;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.RoutineDTO;
-import com.haole.task.model.entity.StatEntity;
 
 import java.util.Collection;
 import java.util.Date;
@@ -19,7 +18,7 @@ public interface RoutineService {
     /**
      * 获取统计数据
      */
-    List<StatEntity> getStat(Collection<Long> userIds, Date date);
+    List<RoutinePojos.UserStat> getStat(Collection<Long> userIds, Date date);
 
     /**
      * 新增。

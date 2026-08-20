@@ -1,8 +1,8 @@
 package com.haole.task.dao;
 
+import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
-import com.haole.task.model.entity.StatEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +21,7 @@ public interface RoutineDao {
 
     List<RoutineDTO> selectByCondition(Routine record);
 
-    List<StatEntity> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
+    List<RoutinePojos.UserStat> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);
 
     Map<String, Object> selectTotalStat(@Param("userId") Long userId);
 

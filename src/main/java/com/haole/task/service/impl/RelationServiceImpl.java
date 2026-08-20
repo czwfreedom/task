@@ -5,6 +5,7 @@ import com.haole.task.dao.RelationDao;
 import com.haole.task.dao.RoutineDao;
 import com.haole.task.model.dto.BaseResponse;
 import com.haole.task.model.dto.RelationPojos;
+import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Relation;
 import com.haole.task.model.entity.RelationDTO;
 import com.haole.task.model.entity.StatEntity;
@@ -159,7 +160,7 @@ public class RelationServiceImpl implements RelationService {
         List<Long> userIds = relations.stream()
                 .map(o -> !ObjectUtils.isEmpty(request.getUserId()) ? o.getUseeId() : o.getUserId()).toList();
         List<UserDTO> users = userService.get(userIds, false);
-        Map<Long, StatEntity> stats = null;
+        Map<Long, RoutinePojos.UserStat> stats = null;
         if (!ObjectUtils.isEmpty(request.getUserId()) && Boolean.TRUE.equals(request.withStat) &&
                 !CollectionUtils.isEmpty(userIds)) {
             stats = routineDao.selectCount(userIds, new Date(DateUtils.getStartOfDay(System.currentTimeMillis())))
@@ -167,7 +168,7 @@ public class RelationServiceImpl implements RelationService {
         }
         for (UserDTO user : users) {
             user.adaptMore();
-            StatEntity stat = stats != null ? stats.get(user.getId()) : null;
+            RoutinePojos.UserStat stat = stats != null ? stats.get(user.getId()) : null;
             if (stat != null) {
                 stat.adapt();
                 user.setRoutine(stat);

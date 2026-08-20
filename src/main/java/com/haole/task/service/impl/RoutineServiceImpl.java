@@ -9,7 +9,6 @@ import com.haole.task.model.dto.DataResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
-import com.haole.task.model.entity.StatEntity;
 import com.haole.task.service.RelationService;
 import com.haole.task.service.RoutineService;
 import com.haole.task.utils.IdGenerator;
@@ -46,7 +45,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<StatEntity> getStat(Collection<Long> userIds, Date date) {
+    public List<RoutinePojos.UserStat> getStat(Collection<Long> userIds, Date date) {
         return routineDao.selectCount(userIds, date);
     }
 
