@@ -31,6 +31,9 @@
         id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `transaction`, `name`,
     detail, medias, remark, media_remark, extra, finish_time, create_time, update_time
     </sql>
+    <sql id="Brief_Column_List">
+        id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `name`, finish_time, create_time, update_time
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -57,6 +60,26 @@
             </if>
         </where>
     </select>
+
+    <select id="selectBy" resultMap="BaseResultMap">
+        select
+        <choose>
+            <when test="withDetail != null and withDetail == true">
+                <include refid="Base_Column_List"/>
+            </when>
+            <otherwise>
+                <include refid="Brief_Column_List"/>
+            </otherwise>
+        </choose>
+        from t_routine
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+            AND `date` >= #{startDate,jdbcType=TIMESTAMP}
+            AND `date` &lt; #{endDate,jdbcType=TIMESTAMP}
+            AND deleted = 0
+        </where>
+    </select>
+
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete

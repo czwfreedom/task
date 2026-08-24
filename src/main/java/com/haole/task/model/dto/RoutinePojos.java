@@ -1,9 +1,12 @@
 package com.haole.task.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.haole.task.model.entity.RoutineDTO;
 import com.haole.task.model.entity.StatEntity;
+import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,8 +26,16 @@ public interface RoutinePojos {
         }
     }
 
+    @Data
     class ListRequest extends RoutineDTO {
         public Boolean withStat;
+
+        public Boolean brief;
+
+        @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+        public Date startDate;
+        @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+        public Date endDate;
     }
 
 

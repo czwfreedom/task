@@ -119,7 +119,13 @@ public class RoutineServiceImpl implements RoutineService {
             return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
         }
 
-        List<RoutineDTO> result = routineDao.selectByCondition(request);
+        List<RoutineDTO> result = null;
+        if (request.getStartDate() != null) {
+            result = routineDao.selectBy(request.getUserId(), request.getStartDate(), request.getEndDate(),
+                    !Boolean.TRUE.equals(request.brief));
+        } else {
+            result = routineDao.selectByCondition(request);
+        }
         if (!CollectionUtils.isEmpty(result)) {
             result.forEach(RoutineDTO::adapt);
             if (Boolean.TRUE.equals(request.withStat)) {

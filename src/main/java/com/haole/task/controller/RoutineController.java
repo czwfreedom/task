@@ -71,8 +71,28 @@ public class RoutineController {
         if (request.getUserId() == null) {
             request.setUserId(userId);
         }
-        request.setDate(new Date(DateUtils.getStartOfDay(
-                request.getDate() != null ? request.getDate().getTime() : System.currentTimeMillis())));
+
+        if ((request.getStartDate() == null) != (request.getEndDate() == null)) {
+            return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+        }
+
+        if (request.getStartDate() != null) {
+            if (request.getStartDate().after(request.getEndDate())) {
+                return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+            }
+
+            if (request.getEndDate().getTime() - request.getStartDate().getTime() > 86400000L * 60) {
+                return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+            }
+
+            if (request.getBrief() == null) {
+                request.setBrief(true);
+            }
+        } else {
+            request.setDate(new Date(DateUtils.getStartOfDay(
+                    request.getDate() != null ? request.getDate().getTime() : System.currentTimeMillis())));
+        }
+
         return routineService.list(userId, request);
     }
 
