@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `t_comment`
     `comment`      tinyint             DEFAULT 0 COMMENT '是否评论',
     `ref`          bigint(19) COMMENT '用于引用别的表',
     `user_id`      bigint(19) NOT NULL COMMENT '归属用户',
-    `detail`       text COMMENT '详情',
+    `detail`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '详情',
     `medias`       text COMMENT '图片或者视频详情',
     `extra`        text COMMENT '保留扩展',
     `praise_time`  datetime COMMENT '点赞时间',
@@ -162,3 +162,32 @@ CREATE TABLE IF NOT EXISTS `t_comment`
     PRIMARY KEY (`id`),
     UNIQUE KEY `REF` (`ref`, `user_id`, `type`)
 ) ENGINE = InnoDB;
+
+# ALTER TABLE t_comment
+#     MODIFY column `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '详情';
+
+
+CREATE TABLE IF NOT EXISTS `t_resource`
+(
+    `id`          bigint       NOT NULL AUTO_INCREMENT,
+    `deleted`     tinyint      NOT NULL DEFAULT 0 COMMENT '是否已删除',
+    `type`        tinyint      NOT NULL DEFAULT 0 COMMENT '类型',
+    `quality`     tinyint      NOT NULL DEFAULT 0 COMMENT '质量，保留',
+    `width`       int COMMENT '图片宽度',
+    `height`      int COMMENT '图片高度',
+    `size`        int COMMENT '文件大小',
+    `duration`    int COMMENT '时长',
+    `time`        datetime COMMENT '文件时间',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `creator`     bigint(19)   NOT NULL COMMENT '用户',
+    `bucket`      varchar(32) COMMENT 'Bucket',
+    `hash`        varchar(32) COMMENT 'Hash',
+    `name`        varchar(128) COMMENT '名字',
+    `path`        varchar(128) NOT NULL COMMENT '路径',
+    `tag`         text COMMENT '预留的标签',
+    `extra`       text COMMENT '保留扩展',
+    PRIMARY KEY (`id`),
+    KEY `IX_HASH` (`hash`)
+) ENGINE = InnoDB;
+
