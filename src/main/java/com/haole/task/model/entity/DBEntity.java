@@ -1,6 +1,7 @@
 package com.haole.task.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import tools.jackson.databind.annotation.JsonSerialize;
@@ -22,6 +23,7 @@ public class DBEntity implements IDBEntity {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date updateTime;
 
+    @JsonIgnore
     public void adapt() {
         this.setDeleted(null);
         this.setUpdateTime(null);

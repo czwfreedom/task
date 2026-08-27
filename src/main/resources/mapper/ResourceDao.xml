@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.haole.task.model.entity.ResourceDTO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+        <result column="checked" jdbcType="TINYINT" property="checked"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
         <result column="quality" jdbcType="TINYINT" property="quality"/>
         <result column="width" jdbcType="INTEGER" property="width"/>
@@ -22,7 +23,7 @@
         <result column="extra" jdbcType="VARCHAR" property="extra"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `type`, quality, width, height, `size`, duration, `time`, create_time,
+        id, deleted, checked, `type`, quality, width, height, `size`, duration, `time`, create_time,
     update_time, creator, bucket, `hash`, `name`, `path`, tag, extra
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -31,17 +32,49 @@
         from t_resource
         where id = #{id,jdbcType=BIGINT}
     </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resource
+        <where>
+            id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=BIGINT}
+            </foreach>
+            AND deleted = 0
+        </where>
+    </select>
+
+    <select id="selectByHashes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resource
+        <where>
+            `hash` in
+            <foreach collection="hashes" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+            AND deleted = 0
+        </where>
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from t_resource
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.haole.task.model.entity.Resource"
-            useGeneratedKeys="true">
+    <insert id="insertSelective" parameterType="com.haole.task.model.entity.Resource">
         insert into t_resource
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
             <if test="deleted != null">
                 deleted,
+            </if>
+            <if test="checked != null">
+                checked,
             </if>
             <if test="type != null">
                 `type`,
@@ -93,8 +126,14 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
             <if test="deleted != null">
                 #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="checked != null">
+                #{checked,jdbcType=TINYINT},
             </if>
             <if test="type != null">
                 #{type,jdbcType=TINYINT},
@@ -151,6 +190,9 @@
         <set>
             <if test="deleted != null">
                 deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="checked != null">
+                checked = #{checked,jdbcType=TINYINT},
             </if>
             <if test="type != null">
                 `type` = #{type,jdbcType=TINYINT},

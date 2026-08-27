@@ -171,6 +171,7 @@ CREATE TABLE IF NOT EXISTS `t_resource`
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT,
     `deleted`     tinyint      NOT NULL DEFAULT 0 COMMENT '是否已删除',
+    `checked`     tinyint      NOT NULL DEFAULT 0 COMMENT '是否已检查',
     `type`        tinyint      NOT NULL DEFAULT 0 COMMENT '类型',
     `quality`     tinyint      NOT NULL DEFAULT 0 COMMENT '质量，保留',
     `width`       int COMMENT '图片宽度',

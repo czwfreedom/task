@@ -15,6 +15,10 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Resource extends InfoEntity {
     /**
+     * 是否检查过
+     */
+    private Byte checked;
+    /**
      * 类型
      */
     private Byte type;
