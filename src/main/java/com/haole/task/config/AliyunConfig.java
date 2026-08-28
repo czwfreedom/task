@@ -17,5 +17,6 @@ public class AliyunConfig {
         private String accessKeyId;
         private String accessKeySecret;
         private String bucket;
+        private String cname;
     }
 }

@@ -45,6 +45,8 @@ public class ResourceController {
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
         }
+
+        request.setHash(request.getHash().toLowerCase());
         return resourceService.create(userId, request);
     }
 
@@ -65,7 +67,7 @@ public class ResourceController {
     }
 
     @RequestLog(logResponse = false)
-    @PostMapping("/v1/resource/update")
+    @PostMapping("/v1/resource/list")
     public BaseResponse list(@RequestHeader(Constants.HEADER_USER_ID) Long userId,
                              @RequestBody ResourcePojos.ListRequest request) {
         if (CollectionUtils.isEmpty(request.ids) || request.getIds().size() > 1000) {

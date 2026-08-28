@@ -25,6 +25,9 @@ public class ResourceDTO extends Resource {
         super.adapt();
         this.setCreator(null);
         this.setChecked(null);
+        if (upload != null && getPath() != null) {
+            setPath(null);
+        }
     }
 
     /**
