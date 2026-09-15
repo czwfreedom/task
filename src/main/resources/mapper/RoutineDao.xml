@@ -8,6 +8,7 @@
         <result column="category" jdbcType="INTEGER" property="category"/>
         <result column="subcategory" jdbcType="INTEGER" property="subcategory"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="delegated" jdbcType="BIGINT" property="delegated"/>
         <result column="duration" jdbcType="BIGINT" property="duration"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
         <result column="plan_time" jdbcType="TIMESTAMP" property="planTime"/>
@@ -28,11 +29,11 @@
         <result column="finished" jdbcType="INTEGER" property="finished"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `transaction`, `name`,
+        id, deleted, `status`, category, subcategory, user_id, delegated, duration, `date`, plan_time, `transaction`, `name`,
     detail, medias, remark, media_remark, extra, finish_time, create_time, update_time
     </sql>
     <sql id="Brief_Column_List">
-        id, deleted, `status`, category, subcategory, user_id, duration, `date`, plan_time, `name`, finish_time, create_time, update_time
+        id, deleted, `status`, category, subcategory, user_id, delegated, duration, `date`, plan_time, `name`, finish_time, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -51,6 +52,9 @@
             </if>
             <if test="userId != null">
                 and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="delegated != null">
+                and delegated = #{delegated,jdbcType=BIGINT}
             </if>
             <if test="date != null">
                 and `date` = #{date,jdbcType=TIMESTAMP}
@@ -104,6 +108,9 @@
             </if>
             <if test="userId != null">
                 user_id,
+            </if>
+            <if test="delegated != null">
+                delegated,
             </if>
             <if test="duration != null">
                 duration,
@@ -164,6 +171,9 @@
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
             </if>
+            <if test="delegated != null">
+                #{delegated,jdbcType=BIGINT},
+            </if>
             <if test="duration != null">
                 #{duration,jdbcType=BIGINT},
             </if>
@@ -222,6 +232,9 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="delegated != null">
+                delegated = #{delegated,jdbcType=BIGINT},
             </if>
             <if test="duration != null">
                 duration = #{duration,jdbcType=BIGINT},

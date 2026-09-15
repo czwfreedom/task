@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `t_routine`
     `subcategory`  int        NOT NULL DEFAULT 0 COMMENT '任务子类型',
 
     `user_id`      bigint(19) NOT NULL COMMENT '归属用户',
+    `delegated`    bigint(19) COMMENT '委托人',
     `duration`     bigint COMMENT '计划任务时长',
     `date`         datetime   NOT NULL COMMENT '任务日期',
     `plan_time`    datetime COMMENT '计划时间',
@@ -64,9 +65,15 @@ CREATE TABLE IF NOT EXISTS `t_routine`
     `update_time`  datetime            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     KEY USER_DATE (`user_id`, `date`),
+    KEY DELEGATED_DATE (`delegated`, `date`),
     UNIQUE KEY `TRANSACTION` (`transaction`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE t_routine
+    ADD COLUMN `delegated` bigint(19) COMMENT '委托人' AFTER `user_id`;
+ALTER TABLE t_routine
+    ADD INDEX `DELEGATED_DATE` (`delegated`, `date`);
 
 
 CREATE TABLE IF NOT EXISTS `t_relation`

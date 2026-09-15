@@ -31,7 +31,11 @@ public class Routine extends InfoEntity {
      */
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
-
+    /**
+     * 指派用户
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long delegated;
     /**
      * 计划时长。
      */

@@ -71,6 +71,9 @@ public class RoutineController {
         if (request.getUserId() == null) {
             request.setUserId(userId);
         }
+        if (Boolean.TRUE.equals(request.withDelegated) && !userId.equals(request.getUserId())) {
+            return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+        }
 
         if ((request.getStartDate() == null) != (request.getEndDate() == null)) {
             return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);

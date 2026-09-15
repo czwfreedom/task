@@ -9,8 +9,10 @@ import com.haole.task.model.dto.DataResponse;
 import com.haole.task.model.dto.RoutinePojos;
 import com.haole.task.model.entity.Routine;
 import com.haole.task.model.entity.RoutineDTO;
+import com.haole.task.model.entity.UserDTO;
 import com.haole.task.service.RelationService;
 import com.haole.task.service.RoutineService;
+import com.haole.task.service.UserService;
 import com.haole.task.utils.IdGenerator;
 import com.haole.task.utils.LogUtils;
 import org.slf4j.Logger;
@@ -32,11 +34,14 @@ public class RoutineServiceImpl implements RoutineService {
     private final RoutineDao routineDao;
     private final RelationService relationService;
     private final CommentDao commentDao;
+    private final UserService userService;
 
-    public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService, CommentDao commentDao) {
+    public RoutineServiceImpl(RoutineDao routineDao, RelationService relationService,
+                              CommentDao commentDao, UserService userService) {
         this.routineDao = routineDao;
         this.relationService = relationService;
         this.commentDao = commentDao;
+        this.userService = userService;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class RoutineServiceImpl implements RoutineService {
             if (exist == null) {
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
-            if (!userId.equals(exist.getUserId())) {
+            if (!userId.equals(exist.getUserId()) && !userId.equals(exist.getDelegated())) {
                 return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
             }
 
@@ -125,6 +130,12 @@ public class RoutineServiceImpl implements RoutineService {
                     !Boolean.TRUE.equals(request.brief));
         } else {
             result = routineDao.selectByCondition(request);
+            // 注意：这里改了数据。
+            if (Boolean.TRUE.equals(request.withDelegated)) {
+                request.setDelegated(userId);
+                request.setUserId(null);
+                result.addAll(routineDao.selectByCondition(request));
+            }
         }
         if (!CollectionUtils.isEmpty(result)) {
             result.forEach(RoutineDTO::adapt);
@@ -141,7 +152,18 @@ public class RoutineServiceImpl implements RoutineService {
                 }
             }
         }
-        return new RoutinePojos.Response(result);
+        RoutinePojos.Response response = new RoutinePojos.Response(result);
+        if (Boolean.TRUE.equals(request.withDelegated) && !CollectionUtils.isEmpty(result)) {
+            List<Long> userIds = result.stream().map(RoutineDTO::getUserId).distinct().collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(userIds)) {
+                List<UserDTO> users = userService.get(userIds, false);
+                if (!CollectionUtils.isEmpty(users)) {
+                    users.forEach(UserDTO::adaptMore);
+                    response.users = users;
+                }
+            }
+        }
+        return response;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.haole.task.model.entity.RoutineDTO;
 import com.haole.task.model.entity.StatEntity;
+import com.haole.task.model.entity.UserDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,6 +22,11 @@ public interface RoutinePojos {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     class Response extends DataResponse<List<RoutineDTO>> {
+        /**
+         * 相关ID
+         */
+        public List<UserDTO> users;
+
         public Response(List<RoutineDTO> data) {
             super(data);
         }
@@ -31,6 +37,8 @@ public interface RoutinePojos {
         public Boolean withStat;
 
         public Boolean brief;
+
+        public Boolean withDelegated;
 
         @JsonFormat(shape = JsonFormat.Shape.NUMBER)
         public Date startDate;
