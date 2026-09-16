@@ -104,6 +104,10 @@ public class RoutineServiceImpl implements RoutineService {
             if (!userId.equals(exist.getUserId()) && !userId.equals(exist.getDelegated())) {
                 return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
             }
+            // 只有自己才可以修改委托。
+            if (item.getDelegated() != null && !userId.equals(exist.getUserId())) {
+                return new BaseResponse(ErrorCode.ERR_NO_PERMISSION);
+            }
 
             // 总有点东西可更新。
             item.setUpdateTime(new Date());
