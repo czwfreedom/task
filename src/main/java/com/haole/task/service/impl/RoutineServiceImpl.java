@@ -162,9 +162,17 @@ public class RoutineServiceImpl implements RoutineService {
         }
         RoutinePojos.Response response = new RoutinePojos.Response(result);
         if (Boolean.TRUE.equals(request.withDelegated) && !CollectionUtils.isEmpty(result)) {
-            List<Long> userIds = result.stream().map(RoutineDTO::getUserId).distinct().collect(Collectors.toList());
+            Set<Long> userIds = new HashSet<>();
+            for (RoutineDTO item : result) {
+                if (!userId.equals(item.getUserId())) {
+                    userIds.add(item.getUserId());
+                }
+                if (item.getDelegated() != null && item.getDelegated() != 0 && !userId.equals(item.getDelegated())) {
+                    userIds.add(item.getDelegated());
+                }
+            }
             if (!CollectionUtils.isEmpty(userIds)) {
-                List<UserDTO> users = userService.get(userIds, false);
+                List<UserDTO> users = userService.get(new ArrayList<>(userIds), false);
                 if (!CollectionUtils.isEmpty(users)) {
                     users.forEach(UserDTO::adaptMore);
                     response.users = users;
