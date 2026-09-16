@@ -77,7 +77,12 @@
         </choose>
         from t_routine
         <where>
-            user_id = #{userId,jdbcType=BIGINT}
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="delegated != null">
+                delegated = #{delegated,jdbcType=BIGINT}
+            </if>
             AND `date` >= #{startDate,jdbcType=TIMESTAMP}
             AND `date` &lt; #{endDate,jdbcType=TIMESTAMP}
             AND deleted = 0

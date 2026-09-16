@@ -21,7 +21,8 @@ public interface RoutineDao {
 
     List<RoutineDTO> selectByCondition(Routine record);
 
-    List<RoutineDTO> selectBy(@Param("userId") Long uerId, @Param("startDate") Date startDate,
+    List<RoutineDTO> selectBy(@Param("userId") Long uerId,
+                              @Param("delegated") Long delegated, @Param("startDate") Date startDate,
                               @Param("endDate") Date endDate, @Param("withDetail") Boolean withDetail);
 
     List<RoutinePojos.UserStat> selectCount(@Param("userIds") Collection<Long> userIds, @Param("date") Date date);

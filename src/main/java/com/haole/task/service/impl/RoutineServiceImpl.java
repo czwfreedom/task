@@ -126,8 +126,12 @@ public class RoutineServiceImpl implements RoutineService {
 
         List<RoutineDTO> result = null;
         if (request.getStartDate() != null) {
-            result = routineDao.selectBy(request.getUserId(), request.getStartDate(), request.getEndDate(),
-                    !Boolean.TRUE.equals(request.brief));
+            result = routineDao.selectBy(request.getUserId(), null,
+                    request.getStartDate(), request.getEndDate(), !Boolean.TRUE.equals(request.brief));
+            if (Boolean.TRUE.equals(request.withDelegated)) {
+                result.addAll(routineDao.selectBy(null, request.getUserId(),
+                        request.getStartDate(), request.getEndDate(), !Boolean.TRUE.equals(request.brief)));
+            }
         } else {
             result = routineDao.selectByCondition(request);
             // 注意：这里改了数据。
