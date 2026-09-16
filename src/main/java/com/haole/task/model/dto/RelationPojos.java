@@ -29,6 +29,11 @@ public interface RelationPojos {
          * 拉当天的统计。
          */
         public Boolean withStat;
+
+        /**
+         * 只拉相互关注的。
+         */
+        public Boolean mutual;
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -82,6 +82,10 @@ public class RelationController {
             request.setUserId(userId);
         }
 
+        if (Boolean.TRUE.equals(request.mutual) && request.getUserId() == null) {
+            return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+        }
+
         return relationService.list(userId, request);
     }
 

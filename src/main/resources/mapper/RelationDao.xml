@@ -43,6 +43,30 @@
         </where>
     </select>
 
+    <select id="selectMutual" parameterType="com.haole.task.model.entity.Relation" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_relation r
+        <where>
+            r.user_id = #{userId,jdbcType=BIGINT}
+            <if test="star != null">
+                and r.`star` = #{star,jdbcType=SMALLINT}
+            </if>
+            <if test="deleted != null">
+                and r.deleted = #{deleted,jdbcType=SMALLINT}
+            </if>
+            and exists (
+                select 1
+                from t_relation m
+                where m.user_id = r.usee_id
+                  and m.usee_id = r.user_id
+                <if test="deleted != null">
+                    and m.deleted = #{deleted,jdbcType=SMALLINT}
+                </if>
+            )
+        </where>
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from t_relation

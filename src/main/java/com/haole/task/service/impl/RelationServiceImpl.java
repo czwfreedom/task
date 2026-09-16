@@ -151,7 +151,10 @@ public class RelationServiceImpl implements RelationService {
         if (request.getDeleted() == null) {
             request.setDeleted((byte) 0);
         }
-        List<RelationDTO> relations = relationDao.selectByCondition(request);
+        // 双边关系：我关注的，同时也关注了我的
+        List<RelationDTO> relations = Boolean.TRUE.equals(request.mutual)
+                ? relationDao.selectMutual(request)
+                : relationDao.selectByCondition(request);
         RelationPojos.ListResponse response = new RelationPojos.ListResponse(relations);
         if (CollectionUtils.isEmpty(relations)) {
             return response;

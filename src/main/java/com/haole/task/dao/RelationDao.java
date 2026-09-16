@@ -18,6 +18,12 @@ public interface RelationDao {
     List<RelationDTO> selectByCondition(Relation record);
 
     /**
+     * 查双边关系：userId 关注的，同时也关注了 userId 的。
+     * 只返回 userId 关注方向的那条关系。
+     */
+    List<RelationDTO> selectMutual(Relation record);
+
+    /**
      * 表示查 userId 可以查看的用户数量
      */
     Integer selectUseeCount(@Param("userId") Long userId);
