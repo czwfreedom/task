@@ -31,6 +31,11 @@ public interface RelationPojos {
         public Boolean withStat;
 
         /**
+         * 统计日期。
+         */
+        public Long statDate;
+
+        /**
          * 只拉相互关注的。
          */
         public Boolean mutual;

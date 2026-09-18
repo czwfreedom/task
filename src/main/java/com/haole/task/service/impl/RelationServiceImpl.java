@@ -166,7 +166,9 @@ public class RelationServiceImpl implements RelationService {
         Map<Long, RoutinePojos.UserStat> stats = null;
         if (!ObjectUtils.isEmpty(request.getUserId()) && Boolean.TRUE.equals(request.withStat) &&
                 !CollectionUtils.isEmpty(userIds)) {
-            stats = routineDao.selectCount(userIds, new Date(DateUtils.getStartOfDay(System.currentTimeMillis())))
+            stats = routineDao.selectCount(userIds,
+                            new Date(DateUtils.getStartOfDay(request.statDate != null ?
+                                    request.statDate : System.currentTimeMillis())))
                     .stream().collect(Collectors.toMap(StatEntity::getId, Function.identity()));
         }
         for (UserDTO user : users) {
