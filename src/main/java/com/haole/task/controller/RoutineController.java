@@ -71,8 +71,9 @@ public class RoutineController {
         if (request.getUserId() == null) {
             request.setUserId(userId);
         }
+        // 暂时关闭这个功能。
         if (Boolean.TRUE.equals(request.withDelegated) && !userId.equals(request.getUserId())) {
-            return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
+            request.withDelegated = false;
         }
 
         if ((request.getStartDate() == null) != (request.getEndDate() == null)) {
