@@ -41,6 +41,9 @@ public class RoutineController {
                     ObjectUtils.isEmpty(item.getTransaction())) {
                 return new BaseResponse(ErrorCode.ERR_INVALID_PARAM);
             }
+            if (item.getDelegated() != null && item.getDelegated() == 0) {
+                item.setDelegated(null);
+            }
             item.setDate(new Date(DateUtils.getStartOfDay(item.getDate() != null ?
                     item.getDate().getTime() : System.currentTimeMillis())));
             item.setUserId(userId);
